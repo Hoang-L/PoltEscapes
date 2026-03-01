@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics — The Escape Logs</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* ── Layout ── */
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.25rem;
+    }
+
+    .col-6  { grid-column: span 6; }
+    .col-4  { grid-column: span 4; }
+    .col-8  { grid-column: span 8; }
+    .col-12 { grid-column: span 12; }
+
+    @media (max-width: 960px) {
+      .col-6, .col-4, .col-8 { grid-column: span 12; }
+    }
+
+    /* ── Chart card ── */
+    .chart-card {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      overflow: hidden;
+    }
+
+    .chart-card-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .chart-card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.2rem;
+    }
+
+    .chart-card-sub {
+      font-size: 0.78rem;
+      color: var(--text-3);
+    }
+
+    /* ── SVG charts ── */
+    .chart-svg {
+      width: 100%;
+      overflow: visible;
+    }
+
+    /* ── Bar chart ── */
+    .bar-group rect {
+      transition: opacity 0.15s;
+      cursor: pointer;
+    }
+    .bar-group:hover rect { opacity: 0.75; }
+
+    /* ── Horizontal bar chart (rankings) ── */
+    .rank-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+    .rank-item { display: flex; flex-direction: column; gap: 0.35rem; }
+
+    .rank-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .rank-name {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 70%;
+    }
+
+    .rank-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text-2);
+      flex-shrink: 0;
+    }
+
+    .rank-track {
+      height: 6px;
+      background: var(--bg-3);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .rank-fill {
+      height: 100%;
+      border-radius: 99px;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ── Stat highlight ── */
+    .highlight-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem;
+    }
+
+    .highlight-cell {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .highlight-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .highlight-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    /* ── Tooltip ── */
+    .chart-tooltip {
+      position: fixed;
+      pointer-events: none;
+      background: var(--bg-2);
+      border: 1px solid var(--border-hi);
+      border-radius: 8px;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.8rem;
+      color: var(--text);
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.1s;
+      white-space: nowrap;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+
+    .chart-tooltip.visible { opacity: 1; }
+    .chart-tooltip .tt-label { color: var(--text-3); font-size: 0.72rem; margin-bottom: 0.2rem; }
+    .chart-tooltip .tt-val { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; }
+
+    /* ── Donut chart ── */
+    .donut-wrap {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .donut-svg { flex-shrink: 0; }
+
+    .donut-legend { display: flex; flex-direction: column; gap: 0.6rem; flex: 1; }
+
+    .legend-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.83rem;
+    }
+
+    .legend-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .legend-name { color: var(--text); flex: 1; }
+    .legend-pct  { color: var(--text-3); font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; }
+
+    /* ── Heatmap ── */
+    .heatmap-wrap { overflow-x: auto; }
+
+    .heatmap-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 6px;
+    }
+
+    .heatmap-cell {
+      aspect-ratio: 1;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: transparent;
+      transition: transform 0.15s;
+      cursor: default;
+      position: relative;
+    }
+
+    .heatmap-cell:hover { transform: scale(1.15); z-index: 2; }
+
+    .heatmap-months {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 6px;
+      margin-bottom: 0.5rem;
+    }
+
+    .heatmap-month-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      text-align: center;
+    }
+
+    /* ── Streak ── */
+    .streak-row {
+      display: flex;
+      gap: 0.4rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+
+    .streak-badge {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    /* ── Line / area chart tooltip circles ── */
+    .dot-hover {
+      cursor: pointer;
+      transition: r 0.1s;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div style="padding-top:var(--nav-h);"></div>
+
+  <div class="container">
+    <section class="section">
+      <div style="margin-bottom: 2rem;">
+        <div class="section-title">Analytics</div>
+        <div class="section-sub">Your escape room history, visualized</div>
+      </div>
+
+      <!-- Highlight stats row -->
+      <div class="highlight-grid" id="highlights" style="margin-bottom:1.5rem;"></div>
+
+      <div class="analytics-grid">
+
+        <!-- Rooms per year (bar) -->
+        <div class="chart-card col-8">
+          <div class="chart-card-header">
+            <div class="chart-card-title">Rooms Per Year</div>
+            <div class="chart-card-sub">Escape attempts and outcomes by year</div>
+          </div>
+          <svg id="chart-year" class="chart-svg" height="220"></svg>
+        </div>
+
+        <!-- Outcome donut -->
+        <div class="chart-card col-4">
+          <div class="chart-card-header">
+            <div class="chart-card-title">Outcome Split</div>
+            <div class="chart-card-sub">Escaped vs. defeated</div>
+          </div>
+          <div class="donut-wrap" id="donut-wrap"></div>
+        </div>
+
+        <!-- Monthly distribution -->
+        <div class="chart-card col-12">
+          <div class="chart-card-header">
+            <div class="chart-card-title">Monthly Distribution</div>
+            <div class="chart-card-sub">Which months you play most</div>
+          </div>
+          <svg id="chart-month" class="chart-svg" height="180"></svg>
+        </div>
+
+        <!-- Top venues -->
+        <div class="chart-card col-6">
+          <div class="chart-card-header">
+            <div class="chart-card-title">Top Venues</div>
+            <div class="chart-card-sub">Most visited companies</div>
+          </div>
+          <div class="rank-list" id="rank-venues"></div>
+        </div>
+
+        <!-- Top countries -->
+        <div class="chart-card col-6">
+          <div class="chart-card-header">
+            <div class="chart-card-title">Locations</div>
+            <div class="chart-card-sub">Rooms by country</div>
+          </div>
+          <div class="rank-list" id="rank-countries"></div>
+        </div>
+
+        <!-- Difficulty breakdown -->
+        <div class="chart-card col-6">
+          <div class="chart-card-header">
+            <div class="chart-card-title">Difficulty Breakdown</div>
+            <div class="chart-card-sub">Escape rate by difficulty level</div>
+          </div>
+          <div id="diff-breakdown"></div>
+        </div>
+
+        <!-- Cumulative rooms area chart -->
+        <div class="chart-card col-6">
+          <div class="chart-card-header">
+            <div class="chart-card-title">Cumulative Rooms</div>
+            <div class="chart-card-sub">Total rooms over time</div>
+          </div>
+          <svg id="chart-cumulative" class="chart-svg" height="180"></svg>
+        </div>
+
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- Shared tooltip -->
+<div class="chart-tooltip" id="tooltip">
+  <div class="tt-label" id="tt-label"></div>
+  <div class="tt-val" id="tt-val"></div>
+</div>
+
+<footer>
+  Update your rooms in <code>../js/data.js</code>
+</footer>
+
+<script src="../js/data.js"></script>
+<script src="../js/nav.js"></script>
+<script src="../js/utils.js"></script>
+<script>
+injectNav('../');
+
+/* ── Colour palette ── */
+const C = {
+  accent:  '#6c63ff',
+  success: '#22c55e',
+  fail:    '#ef4444',
+  gold:    '#f59e0b',
+  teal:    '#00d4aa',
+  purple:  '#a855f7',
+  orange:  '#f97316',
+  bg2:     '#18181f',
+  bg3:     '#202028',
+  border:  'rgba(255,255,255,0.07)',
+  text:    '#e8e8f0',
+  text2:   '#9090a8',
+  text3:   '#60607a',
+};
+
+const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const DIFF_ORDER  = ['easy','medium','hard','expert'];
+const DIFF_COLORS = { easy: C.success, medium: C.gold, hard: C.orange, expert: C.fail };
+
+/* ── Tooltip helpers ── */
+const tooltip = document.getElementById('tooltip');
+const ttLabel = document.getElementById('tt-label');
+const ttVal   = document.getElementById('tt-val');
+
+function showTip(e, label, val) {
+  ttLabel.textContent = label;
+  ttVal.textContent   = val;
+  tooltip.classList.add('visible');
+  moveTip(e);
+}
+
+function moveTip(e) {
+  const x = e.clientX + 14, y = e.clientY - 40;
+  tooltip.style.left = x + 'px';
+  tooltip.style.top  = y + 'px';
+}
+
+function hideTip() { tooltip.classList.remove('visible'); }
+
+document.addEventListener('mousemove', e => { if (tooltip.classList.contains('visible')) moveTip(e); });
+
+/* ── SVG helpers ── */
+const SVG_NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs = {}, parent) {
+  const e = document.createElementNS(SVG_NS, tag);
+  Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, v));
+  if (parent) parent.appendChild(e);
+  return e;
+}
+
+function svgText(parent, x, y, text, style = {}) {
+  const t = el('text', { x, y, ...style }, parent);
+  t.textContent = text;
+  return t;
+}
+
+/* ── Derived data ── */
+const sorted = [...ROOMS].sort((a, b) => a.date.localeCompare(b.date));
+
+// Per year
+const byYear = {};
+sorted.forEach(r => {
+  const y = r.date.slice(0, 4);
+  if (!byYear[y]) byYear[y] = { total: 0, escaped: 0, failed: 0 };
+  byYear[y].total++;
+  byYear[y][r.outcome]++;
+});
+const years = Object.keys(byYear).sort();
+
+// Per month (aggregate across all years)
+const byMonth = Array(12).fill(0);
+ROOMS.forEach(r => { byMonth[parseInt(r.date.slice(5, 7)) - 1]++; });
+
+// Top venues
+const byVenue = {};
+ROOMS.forEach(r => { byVenue[r.venue] = (byVenue[r.venue] || 0) + 1; });
+const topVenues = Object.entries(byVenue).sort((a, b) => b[1] - a[1]);
+
+// Top countries
+const byCountry = {};
+ROOMS.forEach(r => { byCountry[r.country] = (byCountry[r.country] || 0) + 1; });
+const topCountries = Object.entries(byCountry).sort((a, b) => b[1] - a[1]);
+
+// Difficulty
+const byDiff = {};
+ROOMS.forEach(r => {
+  const d = r.difficulty || 'unknown';
+  if (!byDiff[d]) byDiff[d] = { total: 0, escaped: 0 };
+  byDiff[d].total++;
+  if (r.outcome === 'escaped') byDiff[d].escaped++;
+});
+
+// Cumulative
+const cumulative = [];
+let cum = 0;
+sorted.forEach(r => { cum++; cumulative.push({ date: r.date, cum, name: r.name }); });
+
+/* ── HIGHLIGHTS ── */
+function buildHighlights() {
+  const total   = ROOMS.length;
+  const escaped = ROOMS.filter(r => r.outcome === 'escaped').length;
+  const ratings = ROOMS.filter(r => r.rating);
+  const avgR    = ratings.length
+    ? (ratings.reduce((s, r) => s + r.rating, 0) / ratings.length).toFixed(1) : '—';
+  const bestY   = years.reduce((b, y) => byYear[y].total > (byYear[b]?.total || 0) ? y : b, years[0]);
+  const favVenue = topVenues[0]?.[0] || '—';
+  const thisYear = byYear[new Date().getFullYear()]?.total || 0;
+
+  document.getElementById('highlights').innerHTML = [
+    { num: total,                    lbl: 'Total Rooms',    color: C.text },
+    { num: `${Math.round(escaped/total*100)}%`, lbl: 'Escape Rate', color: C.success },
+    { num: avgR,                     lbl: 'Avg Rating',     color: C.gold },
+    { num: years.length,             lbl: 'Years Active',   color: C.accent },
+    { num: bestY,                    lbl: 'Busiest Year',   color: C.purple },
+    { num: thisYear,                 lbl: 'This Year',      color: C.teal },
+  ].map(({ num, lbl, color }) => `
+    <div class="highlight-cell">
+      <div class="highlight-num" style="color:${color}">${num}</div>
+      <div class="highlight-label">${lbl}</div>
+    </div>
+  `).join('');
+}
+
+/* ── ROOMS PER YEAR bar chart ── */
+function buildYearChart() {
+  const svg   = document.getElementById('chart-year');
+  const W     = svg.parentElement.clientWidth - 48; // 1.5rem padding each side
+  const H     = 220;
+  const pad   = { top: 20, right: 10, bottom: 40, left: 36 };
+  const inner = { w: W - pad.left - pad.right, h: H - pad.top - pad.bottom };
+
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.innerHTML = '';
+
+  const maxVal = Math.max(...Object.values(byYear).map(d => d.total));
+  const bw     = Math.min(60, (inner.w / years.length) * 0.55);
+  const gap    = inner.w / years.length;
+
+  // Gridlines
+  for (let i = 0; i <= 4; i++) {
+    const y = pad.top + inner.h - (i / 4) * inner.h;
+    el('line', { x1: pad.left, y1: y, x2: pad.left + inner.w, y2: y,
+      stroke: C.border, 'stroke-width': 1, 'stroke-dasharray': i === 0 ? '' : '4 4' }, svg);
+    if (i > 0) svgText(svg, pad.left - 6, y + 4,
+      Math.round((i / 4) * maxVal),
+      { fill: C.text3, 'font-size': 10, 'text-anchor': 'end', 'font-family': 'JetBrains Mono, monospace' });
+  }
+
+  // Bars
+  years.forEach((year, i) => {
+    const d   = byYear[year];
+    const cx  = pad.left + gap * i + gap / 2;
+
+    // Escaped bar
+    const escH = (d.escaped / maxVal) * inner.h;
+    const escY = pad.top + inner.h - escH;
+    const escRect = el('rect', {
+      x: cx - bw / 2, y: escY, width: bw, height: escH || 0,
+      fill: C.success, rx: 3, opacity: 0.85,
+    }, svg);
+
+    // Failed overlay (stacked on top visually as a different-coloured top segment)
+    if (d.failed > 0) {
+      const failH = (d.failed / maxVal) * inner.h;
+      const failY = escY - failH;
+      const failRect = el('rect', {
+        x: cx - bw / 2, y: failY, width: bw, height: failH,
+        fill: C.fail, rx: 3, opacity: 0.75,
+      }, svg);
+      failRect.addEventListener('mouseenter', e => showTip(e, `${year} — Failed`, d.failed));
+      failRect.addEventListener('mouseleave', hideTip);
+    }
+
+    // Total label
+    svgText(svg, cx, escY - (d.failed > 0 ? (d.failed / maxVal) * inner.h : 0) - 6,
+      d.total, { fill: C.text2, 'font-size': 11, 'text-anchor': 'middle', 'font-family': 'Syne, sans-serif', 'font-weight': 700 });
+
+    // Year label
+    svgText(svg, cx, pad.top + inner.h + 20, year,
+      { fill: C.text3, 'font-size': 11, 'text-anchor': 'middle', 'font-family': 'Inter, sans-serif' });
+
+    escRect.addEventListener('mouseenter', e => showTip(e, `${year}`, `${d.escaped} escaped · ${d.failed} failed`));
+    escRect.addEventListener('mouseleave', hideTip);
+  });
+
+  // Legend
+  const lx = pad.left + inner.w - 130;
+  const ly = pad.top;
+  el('rect', { x: lx, y: ly, width: 10, height: 10, fill: C.success, rx: 2 }, svg);
+  svgText(svg, lx + 14, ly + 9, 'Escaped', { fill: C.text3, 'font-size': 10, 'font-family': 'Inter' });
+  el('rect', { x: lx + 70, y: ly, width: 10, height: 10, fill: C.fail, rx: 2 }, svg);
+  svgText(svg, lx + 84, ly + 9, 'Failed', { fill: C.text3, 'font-size': 10, 'font-family': 'Inter' });
+}
+
+/* ── OUTCOME DONUT ── */
+function buildDonut() {
+  const escaped = ROOMS.filter(r => r.outcome === 'escaped').length;
+  const failed  = ROOMS.length - escaped;
+  const total   = ROOMS.length;
+  const size    = 140;
+  const cx = size / 2, cy = size / 2, r = 52, stroke = 22;
+
+  const slices = [
+    { val: escaped, color: C.success, label: 'Escaped' },
+    { val: failed,  color: C.fail,    label: 'Failed'  },
+  ];
+
+  const circ = 2 * Math.PI * r;
+  let offset = -Math.PI / 2; // start at top
+
+  let paths = '';
+  slices.forEach(s => {
+    const frac  = s.val / total;
+    const angle = frac * 2 * Math.PI;
+    const x1 = cx + r * Math.cos(offset);
+    const y1 = cy + r * Math.sin(offset);
+    const x2 = cx + r * Math.cos(offset + angle);
+    const y2 = cy + r * Math.sin(offset + angle);
+    const large = angle > Math.PI ? 1 : 0;
+    const d = `M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2}`;
+
+    paths += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="${stroke}"
+      stroke-linecap="butt" opacity="0.85"
+      onmouseenter="showTip(event,'${s.label}','${s.val} (${Math.round(frac*100)}%)')"
+      onmouseleave="hideTip()" style="cursor:pointer"/>`;
+    offset += angle;
+  });
+
+  const svg = `<svg class="donut-svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${C.bg3}" stroke-width="${stroke}"/>
+    ${paths}
+    <text x="${cx}" y="${cy - 6}" text-anchor="middle" fill="${C.text}"
+      font-family="Syne,sans-serif" font-size="18" font-weight="700">${Math.round(escaped/total*100)}%</text>
+    <text x="${cx}" y="${cy + 12}" text-anchor="middle" fill="${C.text3}"
+      font-family="Inter,sans-serif" font-size="9" letter-spacing="1">ESCAPE RATE</text>
+  </svg>`;
+
+  const legend = slices.map(s => `
+    <div class="legend-row">
+      <div class="legend-dot" style="background:${s.color}"></div>
+      <span class="legend-name">${s.label}</span>
+      <span class="legend-pct">${s.val} · ${Math.round(s.val/total*100)}%</span>
+    </div>
+  `).join('');
+
+  document.getElementById('donut-wrap').innerHTML = svg + `<div class="donut-legend">${legend}</div>`;
+}
+
+/* ── MONTHLY DISTRIBUTION bar ── */
+function buildMonthChart() {
+  const svg   = document.getElementById('chart-month');
+  const W     = svg.parentElement.clientWidth - 48;
+  const H     = 180;
+  const pad   = { top: 20, right: 10, bottom: 36, left: 32 };
+  const inner = { w: W - pad.left - pad.right, h: H - pad.top - pad.bottom };
+
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.innerHTML = '';
+
+  const maxM = Math.max(...byMonth, 1);
+  const bw   = Math.min(40, (inner.w / 12) * 0.65);
+  const gap  = inner.w / 12;
+
+  // Gridlines
+  for (let i = 0; i <= maxM; i++) {
+    const y = pad.top + inner.h - (i / maxM) * inner.h;
+    el('line', { x1: pad.left, y1: y, x2: pad.left + inner.w, y2: y,
+      stroke: C.border, 'stroke-width': 1, 'stroke-dasharray': i === 0 ? '' : '3 3' }, svg);
+    if (i > 0) svgText(svg, pad.left - 6, y + 4, i,
+      { fill: C.text3, 'font-size': 9, 'text-anchor': 'end', 'font-family': 'JetBrains Mono, monospace' });
+  }
+
+  byMonth.forEach((count, mi) => {
+    const cx  = pad.left + gap * mi + gap / 2;
+    const bh  = (count / maxM) * inner.h;
+    const by_ = pad.top + inner.h - bh;
+
+    // Gradient-style: more rooms = more saturated
+    const alpha = 0.3 + 0.7 * (count / maxM);
+    const rect  = el('rect', {
+      x: cx - bw / 2, y: by_, width: bw, height: bh || 0,
+      fill: C.accent, rx: 3, opacity: alpha,
+    }, svg);
+
+    if (count > 0) {
+      svgText(svg, cx, by_ - 5, count,
+        { fill: C.text2, 'font-size': 10, 'text-anchor': 'middle', 'font-family': 'Syne, sans-serif', 'font-weight': 700 });
+    }
+
+    svgText(svg, cx, pad.top + inner.h + 18, MONTH_NAMES[mi],
+      { fill: C.text3, 'font-size': 10, 'text-anchor': 'middle', 'font-family': 'Inter, sans-serif' });
+
+    rect.addEventListener('mouseenter', e => showTip(e, MONTH_NAMES[mi], `${count} room${count !== 1 ? 's' : ''}`));
+    rect.addEventListener('mouseleave', hideTip);
+  });
+}
+
+/* ── RANK LIST (venues + countries) ── */
+function buildRankList(containerId, data, colorFn) {
+  const max = data[0]?.[1] || 1;
+  document.getElementById(containerId).innerHTML = data.slice(0, 8).map(([name, count], i) => {
+    const pct  = (count / max) * 100;
+    const color = colorFn(i, name);
+    return `
+    <div class="rank-item">
+      <div class="rank-label-row">
+        <span class="rank-name" title="${name}">${name}</span>
+        <span class="rank-value">${count} room${count !== 1 ? 's' : ''}</span>
+      </div>
+      <div class="rank-track">
+        <div class="rank-fill" style="width:${pct}%;background:${color};"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ── DIFFICULTY BREAKDOWN ── */
+function buildDiffBreakdown() {
+  const diffs = DIFF_ORDER.filter(d => byDiff[d]);
+
+  document.getElementById('diff-breakdown').innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:1rem;">
+      ${diffs.map(d => {
+        const data   = byDiff[d];
+        const rate   = Math.round((data.escaped / data.total) * 100);
+        const color  = DIFF_COLORS[d];
+        return `
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;">
+            <div style="display:flex;align-items:center;gap:0.6rem;">
+              <span class="badge badge-diff-${d}">${d}</span>
+              <span style="font-size:0.82rem;color:var(--text-2);">${data.total} room${data.total !== 1 ? 's' : ''}</span>
+            </div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:${color};">${rate}% escaped</span>
+          </div>
+          <div class="rank-track" style="height:8px;">
+            <div class="rank-fill" style="width:${rate}%;background:${color};"></div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+}
+
+/* ── CUMULATIVE AREA CHART ── */
+function buildCumulative() {
+  if (cumulative.length < 2) return;
+
+  const svg   = document.getElementById('chart-cumulative');
+  const W     = svg.parentElement.clientWidth - 48;
+  const H     = 180;
+  const pad   = { top: 20, right: 10, bottom: 36, left: 36 };
+  const inner = { w: W - pad.left - pad.right, h: H - pad.top - pad.bottom };
+
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.innerHTML = '';
+
+  const dates   = cumulative.map(p => new Date(p.date + 'T12:00:00').getTime());
+  const minDate = dates[0], maxDate = dates[dates.length - 1];
+  const maxCum  = cumulative[cumulative.length - 1].cum;
+  const dateRange = maxDate - minDate || 1;
+
+  function px(d) { return pad.left + ((d - minDate) / dateRange) * inner.w; }
+  function py(v) { return pad.top + inner.h - (v / maxCum) * inner.h; }
+
+  // Gridlines
+  for (let i = 0; i <= 4; i++) {
+    const y = pad.top + inner.h - (i / 4) * inner.h;
+    el('line', { x1: pad.left, y1: y, x2: pad.left + inner.w, y2: y,
+      stroke: C.border, 'stroke-width': 1, 'stroke-dasharray': i === 0 ? '' : '4 4' }, svg);
+    if (i > 0) svgText(svg, pad.left - 6, y + 4,
+      Math.round((i / 4) * maxCum),
+      { fill: C.text3, 'font-size': 9, 'text-anchor': 'end', 'font-family': 'JetBrains Mono, monospace' });
+  }
+
+  // Area path
+  const pts = cumulative.map((p, i) => `${px(dates[i])},${py(p.cum)}`).join(' ');
+  const firstX = px(dates[0]), lastX = px(dates[dates.length - 1]);
+  const baseY  = pad.top + inner.h;
+
+  const areaD = `M ${firstX} ${baseY} L ${firstX} ${py(cumulative[0].cum)} L ${pts.split(' ').slice(1).join(' ')} L ${lastX} ${baseY} Z`;
+
+  // Gradient def
+  const defs = el('defs', {}, svg);
+  const grad = el('linearGradient', { id: 'cumGrad', x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+  el('stop', { offset: '0%',   'stop-color': C.accent, 'stop-opacity': 0.35 }, grad);
+  el('stop', { offset: '100%', 'stop-color': C.accent, 'stop-opacity': 0.02 }, grad);
+
+  el('path', { d: areaD, fill: 'url(#cumGrad)' }, svg);
+
+  // Line
+  const lineD = `M ${firstX} ${py(cumulative[0].cum)} L ${pts.split(' ').slice(1).join(' ')}`;
+  el('path', { d: lineD, fill: 'none', stroke: C.accent, 'stroke-width': 2, 'stroke-linejoin': 'round' }, svg);
+
+  // Dots + tooltips
+  cumulative.forEach((p, i) => {
+    const x = px(dates[i]), y = py(p.cum);
+    const dot = el('circle', { cx: x, cy: y, r: 4, fill: C.accent, stroke: C.bg2, 'stroke-width': 2, class: 'dot-hover' }, svg);
+    dot.addEventListener('mouseenter', e => showTip(e, p.name, `Room #${p.cum} · ${formatDate(p.date)}`));
+    dot.addEventListener('mouseleave', hideTip);
+  });
+
+  // X-axis year labels
+  years.forEach(year => {
+    const yearDate = new Date(`${year}-06-15`).getTime();
+    if (yearDate < minDate || yearDate > maxDate) return;
+    const x = px(yearDate);
+    svgText(svg, x, pad.top + inner.h + 18, year,
+      { fill: C.text3, 'font-size': 10, 'text-anchor': 'middle', 'font-family': 'Inter, sans-serif' });
+  });
+}
+
+/* ── Color functions for rank lists ── */
+const PALETTE = [C.accent, C.teal, C.gold, C.purple, C.orange, '#60a5fa', '#f472b6', '#34d399'];
+function colorByIndex(i) { return PALETTE[i % PALETTE.length]; }
+
+/* ── Build everything ── */
+function buildAll() {
+  buildHighlights();
+  buildYearChart();
+  buildDonut();
+  buildMonthChart();
+  buildRankList('rank-venues',    topVenues,    i => colorByIndex(i));
+  buildRankList('rank-countries', topCountries, i => colorByIndex(i + 2));
+  buildDiffBreakdown();
+  buildCumulative();
+}
+
+buildAll();
+
+// Redraw SVG charts on resize
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    buildYearChart();
+    buildMonthChart();
+    buildCumulative();
+  }, 150);
+});
+</script>
+</body>
+</html>

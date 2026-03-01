@@ -10,7 +10,9 @@ function injectNav(root = '') {
       <li><a href="${root}pages/map.html"><span>🗺</span> <span>Map</span></a></li>
       <li><a href="${root}pages/scrapbook.html"><span>📖</span> <span>Scrapbook</span></a></li>
       <li><a href="${root}pages/log.html"><span>📋</span> <span>Log</span></a></li>
+	  <li><a href="${root}pages/analytics.html"><span>📊</span> <span>Analytics</span></a></li>
     </ul>
   </nav>`;
   document.body.insertAdjacentHTML('afterbegin', nav);
+  
 }
