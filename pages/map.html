@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Map — The Escape Logs</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <!-- Leaflet.markercluster -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
+
+  <style>
+    html, body, .page { height: 100%; }
+
+    .map-shell {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - var(--nav-h));
+    }
+
+    /* ---- filter bar ---- */
+    .map-filters {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: 0.75rem 1.25rem;
+      background: var(--bg-1);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    /* ---- map + sidebar ---- */
+    .map-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    #map {
+      flex: 1;
+      z-index: 1;
+    }
+
+    /* ---- sidebar ---- */
+    .map-sidebar {
+      width: 320px;
+      flex-shrink: 0;
+      background: var(--bg-1);
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar-header {
+      padding: 1rem 1.25rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .sidebar-header h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .sidebar-header p {
+      font-size: 0.78rem;
+      color: var(--text-3);
+      margin-top: 0.2rem;
+    }
+
+    .sidebar-list {
+      overflow-y: auto;
+      flex: 1;
+      padding: 0.5rem;
+    }
+
+    .sidebar-item {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      padding: 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background var(--transition);
+      border: 1px solid transparent;
+    }
+
+    .sidebar-item:hover {
+      background: var(--bg-2);
+      border-color: var(--border);
+    }
+
+    .sidebar-item.highlighted {
+      background: rgba(108,99,255,0.08);
+      border-color: rgba(108,99,255,0.25);
+    }
+
+    .si-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .si-info { flex: 1; min-width: 0; }
+    .si-name { font-weight: 500; font-size: 0.88rem; margin-bottom: 0.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .si-venue { font-size: 0.76rem; color: var(--text-2); font-style: italic; margin-bottom: 0.35rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .si-meta { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+    /* ---- Leaflet overrides ---- */
+    .leaflet-tile-pane { filter: brightness(0.45) saturate(0.5); }
+    
+    .leaflet-popup-content-wrapper {
+      background: var(--bg-1) !important;
+      border: 1px solid var(--border-hi) !important;
+      border-radius: var(--radius) !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.6) !important;
+      color: var(--text) !important;
+    }
+
+    .leaflet-popup-tip { background: var(--bg-1) !important; }
+
+    .popup-body { padding: 0.25rem 0; min-width: 200px; }
+    .popup-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.2rem; }
+    .popup-venue { font-size: 0.8rem; color: var(--text-2); font-style: italic; margin-bottom: 0.6rem; }
+    .popup-meta { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.6rem; }
+    .popup-review { font-size: 0.8rem; color: var(--text-2); line-height: 1.5; font-style: italic; }
+    .popup-stars { margin-top: 0.4rem; }
+
+    /* Custom marker */
+    .custom-pin {
+      width: 32px; height: 32px;
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      border: 2px solid;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .custom-pin .inner {
+      transform: rotate(45deg);
+      font-size: 13px;
+      line-height: 1;
+    }
+
+    /* Cluster overrides */
+    .marker-cluster-small, .marker-cluster-medium, .marker-cluster-large {
+      background: rgba(108,99,255,0.25) !important;
+    }
+    .marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div {
+      background: rgba(108,99,255,0.7) !important;
+      color: #fff !important;
+      font-family: 'Syne', sans-serif !important;
+      font-weight: 700 !important;
+    }
+
+    /* Responsive: collapse sidebar */
+    @media (max-width: 768px) {
+      .map-sidebar { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="map-shell">
+
+    <!-- Filter bar -->
+    <div class="map-filters">
+      <span class="filter-label">Filter</span>
+      <select class="filter-select" id="f-outcome">
+        <option value="">All Outcomes</option>
+        <option value="escaped">Escaped</option>
+        <option value="failed">Failed</option>
+      </select>
+      <select class="filter-select" id="f-country">
+        <option value="">All Countries</option>
+      </select>
+      <select class="filter-select" id="f-difficulty">
+        <option value="">All Difficulties</option>
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+        <option value="expert">Expert</option>
+      </select>
+      <select class="filter-select" id="f-rating">
+        <option value="">Any Rating</option>
+        <option value="5">5 Stars</option>
+        <option value="4">4+ Stars</option>
+        <option value="3">3+ Stars</option>
+      </select>
+      <span class="filter-count" id="map-count"></span>
+    </div>
+
+    <!-- Map + Sidebar -->
+    <div class="map-body">
+      <div id="map"></div>
+      <div class="map-sidebar">
+        <div class="sidebar-header">
+          <h3>Rooms on Map</h3>
+          <p id="sidebar-count">Loading…</p>
+        </div>
+        <div class="sidebar-list" id="sidebar-list"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/nav.js"></script>
+<script src="../js/utils.js"></script>
+<script>
+injectNav('../');
+
+const map = L.map('map', {
+  center: [38, -20],
+  zoom: 3,
+  zoomControl: true,
+  attributionControl: false,
+});
+
+// Dark tile layer (CartoDB Dark Matter)
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  maxZoom: 19,
+  subdomains: 'abcd',
+}).addTo(map);
+
+// Subtle attribution
+L.control.attribution({ prefix: false }).addTo(map);
+map.attributionControl.addAttribution('© <a href="https://carto.com">CARTO</a> © <a href="https://openstreetmap.org">OSM</a>');
+
+// Marker cluster group
+const clusterGroup = L.markerClusterGroup({
+  maxClusterRadius: 60,
+  spiderfyOnMaxZoom: true,
+  showCoverageOnHover: false,
+  zoomToBoundsOnClick: true,
+  iconCreateFunction(cluster) {
+    const count = cluster.getChildCount();
+    const size = count < 5 ? 36 : count < 15 ? 44 : 52;
+    return L.divIcon({
+      html: `<div style="
+        width:${size}px;height:${size}px;
+        background:rgba(108,99,255,0.8);
+        border:2px solid rgba(255,255,255,0.2);
+        border-radius:50%;
+        display:flex;align-items:center;justify-content:center;
+        font-family:'Syne',sans-serif;font-weight:700;font-size:${size < 44 ? 12 : 14}px;
+        color:#fff;
+        box-shadow:0 0 16px rgba(108,99,255,0.5);
+      ">${count}</div>`,
+      className: '',
+      iconSize: [size, size],
+      iconAnchor: [size/2, size/2],
+    });
+  }
+});
+map.addLayer(clusterGroup);
+
+let currentMarkers = [];
+let highlightedIdx = null;
+
+function makeIcon(room) {
+  const color = room.outcome === 'escaped' ? '#22c55e' : '#ef4444';
+  const shadow = room.outcome === 'escaped' ? 'rgba(34,197,94,0.5)' : 'rgba(239,68,68,0.5)';
+  const emoji = room.outcome === 'escaped' ? '✓' : '✗';
+  return L.divIcon({
+    html: `<div style="
+      width:28px;height:28px;
+      background:${color};
+      border:2px solid rgba(255,255,255,0.3);
+      border-radius:50% 50% 50% 0;
+      transform:rotate(-45deg);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 2px 12px ${shadow};
+    "><span style="transform:rotate(45deg);font-size:11px;font-weight:700;color:#fff;">${emoji}</span></div>`,
+    className: '',
+    iconSize: [28, 28],
+    iconAnchor: [14, 28],
+    popupAnchor: [0, -28],
+  });
+}
+
+function makePopup(r) {
+  return `<div class="popup-body">
+    <div class="popup-name">${r.name}</div>
+    <div class="popup-venue">${r.venue} · ${locationStr(r)}</div>
+    <div class="popup-meta">
+      ${outcomeBadge(r.outcome)}
+      ${timeBadge(r.time)}
+      ${difficultyBadge(r.difficulty)}
+    </div>
+    ${r.rating ? `<div class="popup-stars">${starsHTML(r.rating)}</div>` : ''}
+    ${r.review ? `<div class="popup-review">"${r.review}"</div>` : ''}
+    <div style="margin-top:0.6rem;font-size:0.75rem;color:var(--text-3);">${formatDate(r.date)}${r.group?.length ? ` · 👥 ${r.group.join(', ')}` : ''}</div>
+  </div>`;
+}
+
+function getFiltered() {
+  const outcome = document.getElementById('f-outcome').value;
+  const country = document.getElementById('f-country').value;
+  const diff    = document.getElementById('f-difficulty').value;
+  const rating  = parseInt(document.getElementById('f-rating').value) || 0;
+
+  return ROOMS.filter(r => {
+    if (outcome && r.outcome !== outcome) return false;
+    if (country && r.country !== country) return false;
+    if (diff && r.difficulty !== diff) return false;
+    if (rating && (r.rating || 0) < rating) return false;
+    return true;
+  });
+}
+
+function renderSidebar(rooms) {
+  const el = document.getElementById('sidebar-list');
+  document.getElementById('sidebar-count').textContent = `${rooms.length} room${rooms.length !== 1 ? 's' : ''} shown`;
+  document.getElementById('map-count').textContent = `${rooms.length} room${rooms.length !== 1 ? 's' : ''}`;
+
+  if (!rooms.length) {
+    el.innerHTML = '<div class="empty"><div class="icon">🔍</div><p>No rooms match filters</p></div>';
+    return;
+  }
+
+  el.innerHTML = rooms.map((r, i) => `
+    <div class="sidebar-item" data-idx="${i}" onclick="focusMarker(${i})">
+      <div class="si-icon">${r.outcome === 'escaped' ? '🟢' : '🔴'}</div>
+      <div class="si-info">
+        <div class="si-name">${r.name}</div>
+        <div class="si-venue">${r.venue}</div>
+        <div class="si-meta">
+          ${outcomeBadge(r.outcome)}
+          ${r.rating ? starsHTML(r.rating) : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+let filteredRooms = [];
+
+function focusMarker(i) {
+  const marker = currentMarkers[i];
+  if (!marker) return;
+  map.setView(marker.getLatLng(), 13, { animate: true });
+  setTimeout(() => marker.openPopup(), 400);
+  document.querySelectorAll('.sidebar-item').forEach((el, j) => {
+    el.classList.toggle('highlighted', j === i);
+  });
+  // Scroll sidebar item into view
+  const item = document.querySelector(`.sidebar-item[data-idx="${i}"]`);
+  item?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+
+function renderMap() {
+  clusterGroup.clearLayers();
+  currentMarkers = [];
+  filteredRooms = getFiltered();
+
+  filteredRooms.forEach((r, i) => {
+    const marker = L.marker([r.lat, r.lng], { icon: makeIcon(r) })
+      .bindPopup(makePopup(r), { maxWidth: 280 });
+
+    marker.on('click', () => {
+      document.querySelectorAll('.sidebar-item').forEach((el, j) => {
+        el.classList.toggle('highlighted', j === i);
+      });
+      const item = document.querySelector(`.sidebar-item[data-idx="${i}"]`);
+      item?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
+
+    clusterGroup.addLayer(marker);
+    currentMarkers.push(marker);
+  });
+
+  renderSidebar(filteredRooms);
+
+  // Fit bounds if we have rooms
+  if (filteredRooms.length) {
+    const latlngs = filteredRooms.map(r => [r.lat, r.lng]);
+    if (filteredRooms.length === 1) {
+      map.setView(latlngs[0], 12);
+    } else {
+      map.fitBounds(latlngs, { padding: [60, 60], maxZoom: 12 });
+    }
+  }
+}
+
+// Populate country filter
+function populateFilters() {
+  const countries = [...new Set(ROOMS.map(r => r.country))].sort();
+  const sel = document.getElementById('f-country');
+  countries.forEach(c => {
+    const o = document.createElement('option');
+    o.value = c; o.textContent = c;
+    sel.appendChild(o);
+  });
+}
+
+['f-outcome', 'f-country', 'f-difficulty', 'f-rating'].forEach(id => {
+  document.getElementById(id).addEventListener('change', renderMap);
+});
+
+populateFilters();
+renderMap();
+</script>
+</body>
+</html>

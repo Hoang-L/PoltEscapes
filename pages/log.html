@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log — The Escape Logs</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .log-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .active-filters {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-top: 0.75rem;
+    }
+
+    .filter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 0.2rem 0.6rem;
+      border-radius: 99px;
+      background: rgba(108,99,255,0.12);
+      border: 1px solid rgba(108,99,255,0.25);
+      color: var(--accent);
+      cursor: pointer;
+    }
+
+    .filter-chip:hover { background: rgba(108,99,255,0.2); }
+
+    /* Expandable row */
+    tr.room-row { cursor: pointer; }
+    tr.detail-row { display: none; }
+    tr.detail-row.open { display: table-row; }
+    tr.detail-row td {
+      background: var(--bg-2);
+      padding: 1.25rem 1.5rem;
+      font-size: 0.88rem;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    .detail-section { }
+    .detail-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 0.4rem;
+    }
+
+    .detail-val { color: var(--text-2); line-height: 1.6; }
+
+    @media (max-width: 600px) {
+      .detail-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div style="padding-top:var(--nav-h);"></div>
+
+  <div class="container">
+    <section class="section">
+      <div class="log-header">
+        <div>
+          <div class="section-title">Full Log</div>
+          <div class="section-sub" style="margin:0;">Click any row to expand details</div>
+        </div>
+        <div style="font-size:0.85rem;color:var(--text-3);" id="summary"></div>
+      </div>
+
+      <div class="filters-bar">
+        <span class="filter-label">Filter</span>
+        <input type="text" class="filter-input" id="f-search" placeholder="Search rooms, venues, locations…">
+        <select class="filter-select" id="f-outcome">
+          <option value="">All Outcomes</option>
+          <option value="escaped">Escaped</option>
+          <option value="failed">Failed</option>
+        </select>
+        <select class="filter-select" id="f-country">
+          <option value="">All Countries</option>
+        </select>
+        <select class="filter-select" id="f-diff">
+          <option value="">Any Difficulty</option>
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+          <option value="expert">Expert</option>
+        </select>
+        <select class="filter-select" id="f-rating">
+          <option value="">Any Rating</option>
+          <option value="5">5 Stars</option>
+          <option value="4">4+ Stars</option>
+          <option value="3">3+ Stars</option>
+        </select>
+        <span class="filter-count" id="count"></span>
+      </div>
+
+      <div class="active-filters" id="active-filters"></div>
+
+      <div class="table-wrap" style="margin-top:0.5rem;">
+        <table>
+          <thead>
+            <tr>
+              <th data-sort="name">Room</th>
+              <th data-sort="date">Date</th>
+              <th data-sort="location">Location</th>
+              <th data-sort="outcome">Outcome</th>
+              <th data-sort="difficulty">Difficulty</th>
+              <th data-sort="time">Time</th>
+              <th data-sort="rating">Rating</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</div>
+
+<footer>
+  Update your rooms in <code>../js/data.js</code>
+</footer>
+
+<script src="../js/data.js"></script>
+<script src="../js/nav.js"></script>
+<script src="../js/utils.js"></script>
+<script>
+injectNav('../');
+
+let sortKey = 'date', sortDir = 'desc';
+let openRow = null;
+
+function getFiltered() {
+  const q       = document.getElementById('f-search').value.toLowerCase();
+  const outcome = document.getElementById('f-outcome').value;
+  const country = document.getElementById('f-country').value;
+  const diff    = document.getElementById('f-diff').value;
+  const rating  = parseInt(document.getElementById('f-rating').value) || 0;
+
+  return ROOMS.filter(r => {
+    if (q && !`${r.name} ${r.venue} ${r.city} ${r.state || ''} ${r.country} ${r.review || ''} ${(r.group||[]).join(' ')}`.toLowerCase().includes(q)) return false;
+    if (outcome && r.outcome !== outcome) return false;
+    if (country && r.country !== country) return false;
+    if (diff && r.difficulty !== diff) return false;
+    if (rating && (r.rating || 0) < rating) return false;
+    return true;
+  });
+}
+
+function getSorted(rooms) {
+  return [...rooms].sort((a, b) => {
+    let va = a[sortKey] ?? '', vb = b[sortKey] ?? '';
+    if (sortKey === 'location') { va = locationStr(a); vb = locationStr(b); }
+    if (sortKey === 'rating' || sortKey === 'difficulty') {
+      const dmap = { easy:1, medium:2, hard:3, expert:4 };
+      if (sortKey === 'difficulty') { va = dmap[va]||0; vb = dmap[vb]||0; }
+      else { va = va||0; vb = vb||0; }
+    }
+    const cmp = va < vb ? -1 : va > vb ? 1 : 0;
+    return sortDir === 'asc' ? cmp : -cmp;
+  });
+}
+
+function render() {
+  const filtered = getFiltered();
+  const rooms = getSorted(filtered);
+
+  const escaped = rooms.filter(r => r.outcome === 'escaped').length;
+  document.getElementById('count').textContent = `${rooms.length} room${rooms.length !== 1 ? 's' : ''}`;
+  document.getElementById('summary').textContent = rooms.length
+    ? `${escaped} escaped · ${rooms.length - escaped} failed · ${Math.round(escaped/rooms.length*100)}% rate`
+    : '';
+
+  const tbody = document.getElementById('tbody');
+  if (!rooms.length) {
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><div class="icon">🔍</div><p>No rooms match your filters.</p></div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = rooms.map((r, i) => `
+    <tr class="room-row" onclick="toggleDetail(${i})">
+      <td class="td-room">
+        <strong>${r.name}</strong>
+        <span>${r.venue}</span>
+      </td>
+      <td class="td-date">${formatDate(r.date)}</td>
+      <td class="td-loc">${locationStr(r)}</td>
+      <td>${outcomeBadge(r.outcome)}</td>
+      <td>${difficultyBadge(r.difficulty) || '<span style="color:var(--text-3);">—</span>'}</td>
+      <td class="td-time">${timeBadge(r.time) || '<span style="color:var(--text-3);">—</span>'}</td>
+      <td>${starsHTML(r.rating)}</td>
+    </tr>
+    <tr class="detail-row" id="detail-${i}">
+      <td colspan="7">
+        <div class="detail-grid">
+          <div class="detail-section">
+            <div class="detail-label">Review</div>
+            <div class="detail-val">${r.review ? `"${r.review}"` : '<em style="color:var(--text-3)">No review yet</em>'}</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">Crew</div>
+            <div class="detail-val">${r.group?.length ? r.group.join(', ') : '<em style="color:var(--text-3)">Solo or unrecorded</em>'}</div>
+            ${r.rating ? `<div class="detail-label" style="margin-top:0.8rem;">Rating</div>
+            <div>${starsHTML(r.rating)}</div>` : ''}
+          </div>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function toggleDetail(i) {
+  const row = document.getElementById(`detail-${i}`);
+  if (!row) return;
+  const isOpen = row.classList.contains('open');
+  // close all
+  document.querySelectorAll('.detail-row.open').forEach(r => r.classList.remove('open'));
+  if (!isOpen) row.classList.add('open');
+}
+
+// Sort headers
+document.querySelectorAll('th[data-sort]').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.sort;
+    if (sortKey === key) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+    else { sortKey = key; sortDir = 'asc'; }
+    document.querySelectorAll('th').forEach(t => t.classList.remove('sort-asc','sort-desc'));
+    th.classList.add(sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+    render();
+  });
+});
+
+// Filters
+['f-search','f-outcome','f-country','f-diff','f-rating'].forEach(id =>
+  document.getElementById(id).addEventListener('input', render));
+
+// Populate country filter
+const countries = [...new Set(ROOMS.map(r => r.country))].sort();
+const cSel = document.getElementById('f-country');
+countries.forEach(c => {
+  const o = document.createElement('option'); o.value = c; o.textContent = c; cSel.appendChild(o);
+});
+
+// Set initial sort indicator
+document.querySelector('th[data-sort="date"]').classList.add('sort-desc');
+
+render();
+</script>
+</body>
+</html>
