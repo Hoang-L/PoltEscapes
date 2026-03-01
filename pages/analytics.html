@@ -308,13 +308,13 @@
         </div>
 
         <!-- Difficulty breakdown -->
-        <!-- <div class="chart-card col-6">
+        <div class="chart-card col-6">
           <div class="chart-card-header">
             <div class="chart-card-title">Difficulty Breakdown</div>
             <div class="chart-card-sub">Escape rate by difficulty level</div>
           </div>
           <div id="diff-breakdown"></div>
-        </div> -->
+        </div>
 
         <!-- Cumulative rooms area chart -->
         <div class="chart-card col-6">
@@ -771,7 +771,7 @@ function buildAll() {
   buildMonthChart();
   buildRankList('rank-venues',    topVenues,    i => colorByIndex(i));
   buildRankList('rank-countries', topCountries, i => colorByIndex(i + 2));
-  // buildDiffBreakdown();
+  buildDiffBreakdown();
   buildCumulative();
 }
 
