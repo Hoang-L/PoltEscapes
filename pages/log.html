@@ -135,7 +135,7 @@
 </div>
 
 <footer>
-  Update your rooms in <code>../js/data.js</code>
+  <!-- Update your rooms in <code>../js/data.js</code> -->
 </footer>
 
 <script src="../js/data.js"></script>
@@ -174,7 +174,9 @@ function getSorted(rooms) {
       else { va = va||0; vb = vb||0; }
     }
     const cmp = va < vb ? -1 : va > vb ? 1 : 0;
-    return sortDir === 'asc' ? cmp : -cmp;
+    if (cmp !== 0) return sortDir === 'asc' ? cmp : -cmp;
+    const idCmp = String(a.id).localeCompare(String(b.id), undefined, {numeric: true});
+    return sortDir === 'asc' ? idCmp : -idCmp;
   });
 }
 

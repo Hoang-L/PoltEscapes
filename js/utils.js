@@ -34,6 +34,30 @@ function roomEmoji(i) {
   return ['🔐','🗝️','💀','⚗️','🔮','📜','🕯️','🏺','🧩','🔭','🧲','🪤'][i % 12];
 }
 
+function roomPhoto(r) {
+  const base = `/PoltEscapes/images/${r.id}`;
+  const src  = r.photo && r.photo !== '' ? r.photo : `${base}.${IMAGE_EXTENSIONS[0]}`;
+  return `<img src="${src}" alt="${r.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="console.log('onerror fired for ${r.id}');this.onerror=null;this.src='${base}.${IMAGE_EXTENSIONS[1]}';">`;
+}
+
+// function roomPhoto(r) {
+//   const base = `/PoltEscapes/images/${r.id}`;
+//   const src  = r.photo || `${base}.${IMAGE_EXTENSIONS[0]}`;
+//   const fb   = roomEmoji(parseInt(r.id));
+
+//   // Build nested onerror chain from right to left
+//   let chain = `this.parentNode.innerHTML='${fb}'`;
+//   for (let i = IMAGE_EXTENSIONS.length - 1; i >= 1; i--) {
+//     chain = `this.src='${base}.${IMAGE_EXTENSIONS[i]}';this.onerror=function(){${chain}};`;
+//   }
+
+//   return `<img src="${src}" alt="${r.name}" style="width:100%;height:100%;object-fit:cover;" onerror="${chain}">`;
+// }
+
+// function roomPhoto(r) {
+//   return r.photo || `images/${r.id}.${IMAGE_EXTENSIONS[0]}`;
+// }
+
 /* Stats derived from ROOMS */
 function computeStats() {
   const total = ROOMS.length;
