@@ -432,13 +432,13 @@ ROOMS.forEach(r => { byCountry[r.country] = (byCountry[r.country] || 0) + 1; });
 const topCountries = Object.entries(byCountry).sort((a, b) => b[1] - a[1]);
 
 // Difficulty
-// const byDiff = {};
-// ROOMS.forEach(r => {
-//   const d = r.difficulty || 'unknown';
-//   if (!byDiff[d]) byDiff[d] = { total: 0, escaped: 0 };
-//   byDiff[d].total++;
-//   if (r.outcome === 'escaped') byDiff[d].escaped++;
-// });
+const byDiff = {};
+ROOMS.forEach(r => {
+  const d = r.difficulty || 'unknown';
+  if (!byDiff[d]) byDiff[d] = { total: 0, escaped: 0 };
+  byDiff[d].total++;
+  if (r.outcome === 'escaped') byDiff[d].escaped++;
+});
 
 // Cumulative
 const cumulative = [];
@@ -665,31 +665,31 @@ function buildRankList(containerId, data, colorFn) {
 }
 
 /* ── DIFFICULTY BREAKDOWN ── */
-// function buildDiffBreakdown() {
-//   const diffs = DIFF_ORDER.filter(d => byDiff[d]);
+function buildDiffBreakdown() {
+  const diffs = DIFF_ORDER.filter(d => byDiff[d]);
 
-//   document.getElementById('diff-breakdown').innerHTML = `
-//     <div style="display:flex;flex-direction:column;gap:1rem;">
-//       ${diffs.map(d => {
-//         const data   = byDiff[d];
-//         const rate   = Math.round((data.escaped / data.total) * 100);
-//         const color  = DIFF_COLORS[d];
-//         return `
-//         <div>
-//           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;">
-//             <div style="display:flex;align-items:center;gap:0.6rem;">
-//               <span class="badge badge-diff-${d}">${d}</span>
-//               <span style="font-size:0.82rem;color:var(--text-2);">${data.total} room${data.total !== 1 ? 's' : ''}</span>
-//             </div>
-//             <span style="font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:${color};">${rate}% escaped</span>
-//           </div>
-//           <div class="rank-track" style="height:8px;">
-//             <div class="rank-fill" style="width:${rate}%;background:${color};"></div>
-//           </div>
-//         </div>`;
-//       }).join('')}
-//     </div>`;
-// }
+  document.getElementById('diff-breakdown').innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:1rem;">
+      ${diffs.map(d => {
+        const data   = byDiff[d];
+        const rate   = Math.round((data.escaped / data.total) * 100);
+        const color  = DIFF_COLORS[d];
+        return `
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;">
+            <div style="display:flex;align-items:center;gap:0.6rem;">
+              <span class="badge badge-diff-${d}">${d}</span>
+              <span style="font-size:0.82rem;color:var(--text-2);">${data.total} room${data.total !== 1 ? 's' : ''}</span>
+            </div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:${color};">${rate}% escaped</span>
+          </div>
+          <div class="rank-track" style="height:8px;">
+            <div class="rank-fill" style="width:${rate}%;background:${color};"></div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+}
 
 /* ── CUMULATIVE AREA CHART ── */
 function buildCumulative() {
@@ -771,7 +771,7 @@ function buildAll() {
   buildMonthChart();
   buildRankList('rank-venues',    topVenues,    i => colorByIndex(i));
   buildRankList('rank-countries', topCountries, i => colorByIndex(i + 2));
-  buildDiffBreakdown();
+  // buildDiffBreakdown();
   buildCumulative();
 }
 
