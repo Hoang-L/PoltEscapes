@@ -166,6 +166,12 @@ button { cursor: pointer; font-family: inherit; }
   margin: 0 auto 2.5rem;
 }
 
+@keyframes haunt {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50%       { transform: translateY(-10px); opacity: 1; }
+}
+.ghost { animation: haunt 3s ease-in-out infinite; }
+
 /* ===================== STATS ROW ===================== */
 .stats-row {
   display: flex;
@@ -221,7 +227,7 @@ button { cursor: pointer; font-family: inherit; }
 
 .section-title {
   font-family: 'Syne', sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.5rem; /*1.5 is default*/
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text);
@@ -272,7 +278,7 @@ button { cursor: pointer; font-family: inherit; }
 }
 
 .card-title-text {
-  font-weight: 600;
+  font-weight: 600; 
   font-size: 1rem;
   margin-bottom: 0.15rem;
   color: var(--text);

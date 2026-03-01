@@ -10,9 +10,12 @@
 <div class="page">
 
   <div class="hero">
-    <div class="hero-eyebrow">🔐 Personal Chronicle</div>
-    <h1>Polt Escapes</h1>
-    <p>A meticulous record of every lock picked, cipher cracked, and room conquered — or survived.</p>
+    <!-- <div class="hero-eyebrow">🔐 Personal Chronicle</div> -->
+    <h1>
+      Polt Escapes
+      <img src="images/ghost.png" alt="ghost" class="ghost" style="height: 0.85em; vertical-align: middle; margin-left: 0.3em; display: inline-block;">
+    </h1>
+    <p>Because why not...</p>
     <div class="stats-row" id="stats-row"></div>
   </div>
 
@@ -79,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="stat-cell"><div class="num accent">${s.rate}%</div><div class="lbl">Escape Rate</div></div>
     <div class="stat-cell"><div class="num">${s.states}</div><div class="lbl">States</div></div>
     <div class="stat-cell"><div class="num">${s.countries}</div><div class="lbl">Countries</div></div>
-    <div class="stat-cell"><div class="num">${s.avgRating}</div><div class="lbl">Avg Rating</div></div>
   `;
 
   // Recent rooms (last 3)
