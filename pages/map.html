@@ -184,13 +184,13 @@
       <select class="filter-select" id="f-country">
         <option value="">All Countries</option>
       </select>
-      <select class="filter-select" id="f-difficulty">
+      <!-- <select class="filter-select" id="f-difficulty">
         <option value="">All Difficulties</option>
         <option value="easy">Easy</option>
         <option value="medium">Medium</option>
         <option value="hard">Hard</option>
         <option value="expert">Expert</option>
-      </select>
+      </select> -->
       <select class="filter-select" id="f-rating">
         <option value="">Any Rating</option>
         <option value="5">5 Stars</option>
@@ -308,13 +308,13 @@ function makePopup(r) {
 function getFiltered() {
   const outcome = document.getElementById('f-outcome').value;
   const country = document.getElementById('f-country').value;
-  const diff    = document.getElementById('f-difficulty').value;
+  // const diff    = document.getElementById('f-difficulty').value;
   const rating  = parseInt(document.getElementById('f-rating').value) || 0;
 
   return ROOMS.filter(r => {
     if (outcome && r.outcome !== outcome) return false;
     if (country && r.country !== country) return false;
-    if (diff && r.difficulty !== diff) return false;
+    // if (diff && r.difficulty !== diff) return false;
     if (rating && (r.rating || 0) < rating) return false;
     return true;
   });
@@ -405,7 +405,7 @@ function populateFilters() {
   });
 }
 
-['f-outcome', 'f-country', 'f-difficulty', 'f-rating'].forEach(id => {
+['f-outcome', 'f-country', 'f-rating'].forEach(id => {
   document.getElementById(id).addEventListener('change', renderMap);
 });
 

@@ -207,7 +207,8 @@
       padding: 10px 10px 44px;
       box-shadow:
         2px 3px 8px rgba(0,0,0,0.45),
-        0 1px 2px rgba(0,0,0,0.25);
+        0 1px 2px rgba(0,0,0,0.25),
+        0 0 0px transparent;  /* glow placeholder */
       position: relative;
       cursor: pointer;
       transform: rotate(var(--tilt));
@@ -432,13 +433,13 @@
         <select class="filter-select" id="f-country">
           <option value="">All Countries</option>
         </select>
-        <select class="filter-select" id="f-diff">
+        <!-- <select class="filter-select" id="f-diff">
           <option value="">Any Difficulty</option>
           <option value="easy">Easy</option>
           <option value="medium">Medium</option>
           <option value="hard">Hard</option>
           <option value="expert">Expert</option>
-        </select>
+        </select> -->
         <span class="filter-count" id="count"></span>
       </div>
 
@@ -486,13 +487,13 @@ function getFiltered() {
   const q       = document.getElementById('f-search').value.toLowerCase();
   const outcome = document.getElementById('f-outcome').value;
   const country = document.getElementById('f-country').value;
-  const diff    = document.getElementById('f-diff').value;
+  // const diff    = document.getElementById('f-diff').value;
 
   return ROOMS.filter(r => {
     if (q && !`${r.name} ${r.venue} ${r.city} ${r.review || ''}`.toLowerCase().includes(q)) return false;
     if (outcome && r.outcome !== outcome) return false;
     if (country && r.country !== country) return false;
-    if (diff && r.difficulty !== diff) return false;
+    // if (diff && r.difficulty !== diff) return false;
     return true;
   });
 }
@@ -505,12 +506,21 @@ function renderPolaroids(rooms) {
     wall.innerHTML = `<div class="empty"><div class="icon">🔍</div><p>No rooms match your filters.</p></div>`;
     return;
   }
-  const rowFlow = sortMode === 'date-asc' || sortMode === 'date-desc';
+  // const rowFlow = sortMode === 'date-asc' || sortMode === 'date-desc';
+  const rowFlow = true;
   wall.innerHTML = `<div class="polaroid-wall ${rowFlow ? 'row-flow' : ''}">${rooms.map((r, i) => {
+    const POLAROID_GLOWS = {
+      1: 'none',
+      2: '0 0 12px 4px rgba(250,204,21,0.4)',
+      3: '0 0 18px 6px rgba(249,115,22,0.55)',
+      4: '0 0 22px 8px rgba(34,197,94,0.6)',
+      5: '0 0 30px 12px rgba(255,45,155,0.75)',
+     };
     const tilt    = TILTS[i % TILTS.length];
     const tapeRot = TAPE_ROTS[i % TAPE_ROTS.length];
     const dotColor = r.outcome === 'escaped' ? '#22c55e' : '#ef4444';
     const starsStr = r.rating ? '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating) : '';
+    const glow     = r.rating ? POLAROID_GLOWS[r.rating] : 'none';
 
     const photoArea = r.photo
       ? `<div class="polaroid-img">
@@ -541,12 +551,12 @@ function renderPolaroids(rooms) {
 
     return `
     <div class="polaroid-wrap">
-      <div class="polaroid" style="--tilt:${tilt}deg; --tape-rot:${tapeRot}deg;">
+      <div class="polaroid" style="--tilt:${tilt}deg; --tape-rot:${tapeRot}deg; box-shadow: 2px 3px 8px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.25), ${glow};">
         <div class="polaroid-dot" style="background:${dotColor}; box-shadow:0 0 5px ${dotColor};"></div>
         ${photoArea}
         <div class="polaroid-caption">
           <div class="polaroid-caption-name">${r.name}</div>
-          <div class="polaroid-caption-sub">${starsStr ? starsStr + ' · ' : ''}${formatDate(r.date)}</div>
+          <div class="polaroid-caption-sub">${formatDate(r.date)}</div>
         </div>
       </div>
     </div>`;
@@ -568,7 +578,7 @@ function renderCards(rooms) {
         <div class="flip-front card" style="display:flex;flex-direction:column;height:100%;">
           <div class="outcome-stripe ${r.outcome === 'failed' ? 'fail' : ''}"></div>
           <div class="card-image-wrap">
-            ${`<img src="${roomPhoto(r)}" alt="${r.name}" onerror="this.parentNode.innerHTML='${roomEmoji(i)}'">`}
+            ${`<img src="../${r.photo}" alt="${r.name}" loading="lazy">`}
           </div>
           <div class="card-content" style="flex:1;display:flex;flex-direction:column;gap:0.4rem;">
             <div class="card-meta">
@@ -649,7 +659,7 @@ document.querySelectorAll('.sort-btn').forEach(btn => {
 });
 
 /* ── Filters ── */
-['f-search','f-outcome','f-country','f-diff'].forEach(id => {
+['f-search','f-outcome','f-country'].forEach(id => {
   document.getElementById(id).addEventListener('input', render);
 });
 

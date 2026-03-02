@@ -28,7 +28,7 @@ const ROOMS = [
     venue: "The Architect (Reseda)",
     date: "2018-09-14",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.19820528695118, lng: -118.53624207429142,
     outcome: "escaped",
     group: ["Huy D.","Khiem","Raymond","Kanate","Erick"],
     photo: "images/1.jpg",
@@ -39,7 +39,7 @@ const ROOMS = [
     venue: "Amazing Escape Room (North Hills)",
     date: "2018-12-26",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.228864583695184, lng: -118.50157077295798,   
     outcome: "escaped",
     group: ["Brian","Nick","Gintas","Johnny"],
     photo: "images/2.jpg",
@@ -50,7 +50,7 @@ const ROOMS = [
     venue: "Cinema Escape Rooms (Los Alamitos)",
     date: "2019-08-24",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.80258126689778, lng: -118.05760679923397,   
     outcome: "escaped",
     group: ["Huy L.","Tee","Elly","May","Ann"],
     photo: "images/3.jpg",
@@ -61,7 +61,7 @@ const ROOMS = [
     venue: "The Hidden Passage (North Hollywood)",
     date: "2019-12-26",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.20550856404209, lng: -118.4137475231261,   
     outcome: "escaped",
     group: ["Brian","David","Kanate","Huy D.","Andrew"],
     photo: "images/4.jpg",
@@ -72,7 +72,7 @@ const ROOMS = [
     venue: "Red Door (Oxnard)",
     date: "2021-11-13",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.240245426415555, lng: -119.17612175703255,
     outcome: "failed",
     group: ["Brian","Raymond"],
     photo: "images/5.jpg",
@@ -83,18 +83,19 @@ const ROOMS = [
     venue: "West LA Maze Rooms (Los Angeles)",
     date: "2022-02-20",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.04188944001148, lng: -118.46093530604008,
     outcome: "escaped",
+    rating: 2,
     group: ["Brian","Raymond","David"],
     photo: "images/6.jpg",
   },
   {
     id: "7",
     name: "Vault 805",
-    venue: "Two Trees (Oxnard)",
+    venue: "Two Trees (Ventura)",
     date: "2022-04-09",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.248074102808, lng: -119.19687903482969,
     outcome: "escaped",
     group: ["Shalvind","Tim","Evelyn","Tim's friend","Johnny Takeover"],
     photo: "images/7.jpg",
@@ -105,7 +106,7 @@ const ROOMS = [
     venue: "101 Escape Rooms (Westlake/Thousand Oaks)",
     date: "2022-06-11",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.15452212358908, lng: -118.8038754558952,
     outcome: "escaped",
     group: ["Brian","Robert","David"],
     photo: "images/8.jpg",
@@ -116,7 +117,7 @@ const ROOMS = [
     venue: "The Architect (Reseda)",
     date: "2022-06-26",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.19820528695118, lng: -118.53624207429142,
     outcome: "escaped",
     group: ["Gintas","Nick","Jason","Johnny"],
     photo: "images/9.jpg",
@@ -129,6 +130,7 @@ const ROOMS = [
     country: "Switzerland",
     lat: 46.18624993834628, lng: 6.143943047451721,
     outcome: "failed",
+    rating: 5,
     group: ["Huy L.","Mom","Dad","Duy"],
     photo: "images/10.png",
   },
@@ -138,8 +140,9 @@ const ROOMS = [
     venue: "Crossroads Escape (Anaheim)",
     date: "2022-08-28",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.85976003189977, lng: -117.82391704096062,
     outcome: "escaped",
+    rating: 3,
     group: ["Huy L.","Tee","Elly","May","Ann","Don"],
     photo: "images/11.jpg",
   },
@@ -149,8 +152,9 @@ const ROOMS = [
     venue: "Hypnotic Escape Rooms (Van Nuys)",
     date: "2022-09-10",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.18633974855882, lng: -118.44905666596189,
     outcome: "escaped",
+    rating: 2,
     group: ["Gintas","Nick","Jason","Johnny"],
     photo: "images/12.jpg",
   },
@@ -160,7 +164,7 @@ const ROOMS = [
     venue: "The Unlockables (San Diego",
     date: "2022-09-14",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 32.83317893867172, lng: -117.16000740883032,
     outcome: "escaped",
     group: ["Erdi","Chris","Jose","Jacob","Sean","Russel"],
     photo: "images/13.jpg",
@@ -173,6 +177,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brandon","Jack","Jose","Sean"],
     photo: ""
   },
@@ -184,6 +189,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 3,
     group: ["Ann","Michelle","Brendan"],
     photo: "",
   },
@@ -204,7 +210,7 @@ const ROOMS = [
     venue: "Hypnotic Escape Rooms (Van Nuys)",
     date: "2022-12-26",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.18633974855882, lng: -118.44905666596189,
     outcome: "escaped",
     group: ["Gintas","Nick","Jason","Johnny"],
     photo: "",
@@ -217,6 +223,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 3,
     group: ["Huy L.","May","Ann"],
     photo: "images/18.jpeg",
   },
@@ -228,6 +235,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 3,
     group: ["Brian","Raymond"],
     photo: "",
   },
@@ -239,6 +247,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "failed",
+    rating: 4,
     group: ["Brian","Raymond","Kevin","Kenny","Michael"],
     photo: "",
   },
@@ -250,6 +259,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 4,
     group: ["Brian","Raymond","Joseph","Michael Wu","Michael","Kenny"],
     photo: "",
   },
@@ -262,6 +272,7 @@ const ROOMS = [
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
     group: ["Jack","Jose","Casey","Sean"],
+    rating: 2,
     photo: "images/22.jpeg",
   },
   {
@@ -273,6 +284,7 @@ const ROOMS = [
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
     group: ["Brian","Raymond","Chris","Steph"],
+    rating: 2,
     photo: "images/23.jpeg",
   },
   {
@@ -283,6 +295,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 4,
     group: ["Brian","Raymond"],
     photo: "",
   },
@@ -292,7 +305,7 @@ const ROOMS = [
     venue: "Hypnotic Escape Rooms (Van Nuys)",
     date: "2023-07-09",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.18633974855882, lng: -118.44905666596189,
     outcome: "escaped",
     group: ["Gintas","Nick","Jason","Johnny"],
     photo: "",
@@ -305,6 +318,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 3,
     group: ["Brian","Patricia","Connie"],
     photo: "",
   },
@@ -327,6 +341,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Erdi","Michael","Sean","Russel"],
     photo: "",
   },
@@ -349,6 +364,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 4,
     group: ["Huy L.","May","Ann","Tee","Elly","Don"],
     photo: "images/30.jpeg",
   },
@@ -360,6 +376,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 3,
     group: ["Brian","Raymond","Chris","Steph"],
     photo: "",
   },
@@ -371,6 +388,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian"],
     photo: "",
   },
@@ -382,6 +400,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 3,
     group: ["Brian","Raymond","Chris","Steph"],
     photo: "",
   },
@@ -394,6 +413,7 @@ const ROOMS = [
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
     group: ["Brian","Raymond"],
+    rating: 5,
     photo: "images/34.jpeg",
   },
   {
@@ -404,6 +424,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 5,
     group: ["Brian","Raymond","Huy D."],
     photo: "images/35.jpeg",
   },
@@ -415,6 +436,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian","Raymond","Huy D."],
     photo: "",
   },
@@ -426,6 +448,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian","Raymond","Huy D."],
     photo: "",
   },
@@ -435,7 +458,7 @@ const ROOMS = [
     venue: "West LA Maze Rooms (Los Angeles)",
     date: "2024-01-12",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.04188944001148, lng: -118.46093530604008,
     outcome: "escaped",
     group: ["Brian","Patricia","Amber"],
     photo: "",
@@ -448,6 +471,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian","Kanate","Khiem","Kristine"],
     photo: "images/39.png",
   },
@@ -459,6 +483,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 3,
     group: ["Brian","Raymond","Chris","Steph","Patricia"],
     photo: "",
   },
@@ -470,6 +495,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Patricia","Augustin"],
     photo: "",
   },
@@ -525,6 +551,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Sean","Derek","Jacob"],
     photo: "images/45_46.jpg",
   },
@@ -547,6 +574,7 @@ const ROOMS = [
     country: "Japan",
     lat: 34.65917454793667, lng: 135.49580395127882,
     outcome: "escaped",
+    rating: 3,
     group: ["Huy L.","May","Ann"],
     photo: "",
   },
@@ -556,7 +584,7 @@ const ROOMS = [
     venue: "West LA Maze Rooms (Los Angeles)",
     date: "2024-05-11",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.04188944001148, lng: -118.46093530604008,
     outcome: "escaped",
     group: ["Jason","Johnny"],
     photo: "",
@@ -569,6 +597,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "failed",
+    rating: 2,
     group: ["Brian","Raymond"],
     photo: "",
   },
@@ -591,6 +620,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian","Raymond"],
     photo: "",
   },
@@ -613,6 +643,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian","Raymond","Chris","Steph","Juan"],
     photo: "",
   },
@@ -622,7 +653,7 @@ const ROOMS = [
     venue: "Red Door (Oxnard)",
     date: "2024-06-19",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.240245426415555, lng: -119.17612175703255,
     outcome: "escaped",
     group: ["Brian"],
     photo: "",
@@ -633,7 +664,7 @@ const ROOMS = [
     venue: "Red Door (Oxnard)",
     date: "2024-06-19",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.240245426415555, lng: -119.17612175703255,
     outcome: "escaped",
     group: ["Brian"],
     photo: "",
@@ -679,6 +710,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian","Raymond"],
     photo: "",
   },
@@ -723,6 +755,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian"],
     photo: "",
   },
@@ -734,6 +767,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian","Raymond","Chris","Steph"],
     photo: "",
   },
@@ -756,6 +790,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian","Khiem","Kristine"],
     photo: "",
   },
@@ -768,6 +803,7 @@ const ROOMS = [
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
     group: ["Ann","Leon","Jess"],
+    rating: 3,
     photo: "images/68.jpeg",
   },
   {
@@ -789,6 +825,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Ann","Tee","Elly"],
     photo: "",
   },
@@ -800,6 +837,7 @@ const ROOMS = [
     country: "Canada",
     lat: 45.58604128934039, lng: -73.76798176498842,
     outcome: "escaped",
+    rating: 4,
     group: ["Brian","Raymond","Huy D."],
     photo: "",
   },
@@ -811,6 +849,7 @@ const ROOMS = [
     country: "Canada",
     lat: 45.58604128934039, lng: -73.76798176498842,
     outcome: "escaped",
+    rating: 4,
     group: ["Brian","Raymond","Huy D."],
     photo: "",
   },
@@ -835,6 +874,7 @@ const ROOMS = [
     country: "Canada",
     lat: 45.58604128934039, lng: -73.76798176498842,
     outcome: "escaped",
+    rating: 4,
     group: ["Brian","Raymond","Huy D."],
     photo: "",
   },
@@ -846,6 +886,7 @@ const ROOMS = [
     country: "Canada",
     lat: 45.58604128934039, lng: -73.76798176498842,
     outcome: "escaped",
+    rating: 5,
     group: ["Brian","Raymond","Huy D."],
     photo: "",
   },
@@ -868,6 +909,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian","Chris","Steph"],
     photo: "",
   },
@@ -879,6 +921,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian","Raymond"],
     photo: "",
   },
@@ -890,6 +933,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 3,
     group: ["Brian","Raymond","Juan"],
     photo: "",
   },
@@ -901,6 +945,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 3,
     group: ["Brian","Raymond","Juan","Chris","Steph","Khiem","Kristine"],
     photo: "",
   },
@@ -912,6 +957,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 3,
     group: ["Brian","Tee"],
     photo: "",
   },
@@ -978,6 +1024,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian"],
     photo: "",
   },
@@ -989,6 +1036,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian"],
     photo: "",
   },
@@ -1022,6 +1070,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 4,
     group: ["Brian","Raymond","Kanate"],
     photo: "",
   },
@@ -1044,6 +1093,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian","Kevin"],
     photo: "",
   },
@@ -1066,6 +1116,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 4,
     group: ["Brian","Raymond","Kanate"],
     photo: "images/95.jpeg",
   },
@@ -1088,6 +1139,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian","Raymond","Huy D."],
     photo: "",
   },
@@ -1110,6 +1162,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 3,
     group: ["Brian","Raymond","Huy D."],
     photo: "",
   },
@@ -1121,6 +1174,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 4,
     group: ["Brian","Raymond","Huy D."],
     photo: "",
   },
@@ -1132,6 +1186,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 4,
     group: ["Brian","Raymond","Huy D."],
     photo: "images/101_102_103.jpg",
   },
@@ -1143,6 +1198,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 3,
     group: ["Brian","Raymond","Huy D."],
     photo: "images/101_102_103.jpg",
   },
@@ -1154,6 +1210,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian","Raymond","Huy D."],
     photo: "images/101_102_103.jpg",
   },
@@ -1165,6 +1222,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 3,
     group: ["Brian","Raymond","Huy D."],
     photo: "images/104.jpeg",
   },
@@ -1176,6 +1234,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 3,
     group: ["Huy L."],
     photo: "",
   },
@@ -1220,6 +1279,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 3,
     group: ["Brian","Raymond"],
     photo: "",
   },
@@ -1231,6 +1291,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian","Raymond","Erdi"],
     photo: "images/110.jpeg",
   },
@@ -1242,6 +1303,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian","Raymond","Erdi"],
     photo: "images/111.jpeg",
   },
@@ -1264,6 +1326,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 4,
     group: ["Brian","Raymond","Erdi"],
     photo: "images/113.jpeg",
   },
@@ -1275,6 +1338,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian","Raymond"],
     photo: "images/114.jpeg",
   },
@@ -1286,6 +1350,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 2,
     group: ["Brian","Raymond"],
     photo: "",
   },
@@ -1297,6 +1362,7 @@ const ROOMS = [
     country: "United States",
     lat: 0, lng: 0,  // ← add coordinates from Google Maps
     outcome: "escaped",
+    rating: 3,
     group: ["Brian","Raymond"],
     photo: "",
   },

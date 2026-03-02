@@ -1,9 +1,32 @@
 /* ===================== SHARED UTILITIES ===================== */
 
+const STAR_COLORS = {
+  1: null,
+  2: '#facc15',
+  3: '#f97316',
+  4: '#22c55e',
+  5: '#ff2d9b',
+};
+
+const STAR_GLOWS = {
+  1: 'none',
+  2: '0 0 4px rgba(250,204,21,0.4)',
+  3: '0 0 8px rgba(249,115,22,0.6)',
+  4: '0 0 12px rgba(34,197,94,0.7)',
+  5: '0 0 18px rgba(255,45,155,0.9)',
+};
+
 function starsHTML(n, max = 5) {
   if (!n) return '<span style="color:var(--text-3);font-size:0.8rem;">—</span>';
-  let h = '<span class="stars">';
-  for (let i = 1; i <= max; i++) h += `<span class="${i <= n ? '' : 'off'}">★</span>`;
+  const color = STAR_COLORS[n];
+  const glow  = STAR_GLOWS[n];
+  const style = color
+    ? `color:${color};text-shadow:${glow};`
+    : `color:var(--text-3);`;
+  let h = `<span class="stars" style="${style}">`;
+  for (let i = 1; i <= max; i++) {
+    h += `<span${i <= n ? '' : ` style="color:var(--bg-3);text-shadow:none;"`}>★</span>`;
+  }
   return h + '</span>';
 }
 
@@ -12,8 +35,7 @@ function formatDate(d) {
 }
 
 function difficultyBadge(d) {
-  if (!d) return '';
-  return `<span class="badge badge-diff-${d}">${d}</span>`;
+  return '';
 }
 
 function outcomeBadge(o) {
@@ -35,28 +57,8 @@ function roomEmoji(i) {
 }
 
 function roomPhoto(r) {
-  const base = `/PoltEscapes/images/${r.id}`;
-  const src  = r.photo && r.photo !== '' ? r.photo : `${base}.${IMAGE_EXTENSIONS[0]}`;
-  return `<img src="${src}" alt="${r.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="console.log('onerror fired for ${r.id}');this.onerror=null;this.src='${base}.${IMAGE_EXTENSIONS[1]}';">`;
+  return r.photo || `images/${r.id}.${IMAGE_EXTENSIONS[0]}`;
 }
-
-// function roomPhoto(r) {
-//   const base = `/PoltEscapes/images/${r.id}`;
-//   const src  = r.photo || `${base}.${IMAGE_EXTENSIONS[0]}`;
-//   const fb   = roomEmoji(parseInt(r.id));
-
-//   // Build nested onerror chain from right to left
-//   let chain = `this.parentNode.innerHTML='${fb}'`;
-//   for (let i = IMAGE_EXTENSIONS.length - 1; i >= 1; i--) {
-//     chain = `this.src='${base}.${IMAGE_EXTENSIONS[i]}';this.onerror=function(){${chain}};`;
-//   }
-
-//   return `<img src="${src}" alt="${r.name}" style="width:100%;height:100%;object-fit:cover;" onerror="${chain}">`;
-// }
-
-// function roomPhoto(r) {
-//   return r.photo || `images/${r.id}.${IMAGE_EXTENSIONS[0]}`;
-// }
 
 /* Stats derived from ROOMS */
 function computeStats() {
