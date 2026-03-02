@@ -175,7 +175,7 @@ const ROOMS = [
     venue: "Steal and Escape (San Diego)",
     date: "2022-12-06",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 32.65965594815512, lng: -117.1025266749002,
     outcome: "escaped",
     rating: 2,
     group: ["Brandon","Jack","Jose","Sean"],
@@ -269,7 +269,7 @@ const ROOMS = [
     venue: "Steal and Escape (San Diego)",
     date: "2023-03-28",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 32.65965594815512, lng: -117.1025266749002,
     outcome: "escaped",
     group: ["Jack","Jose","Casey","Sean"],
     rating: 2,
@@ -320,7 +320,7 @@ const ROOMS = [
     outcome: "escaped",
     rating: 3,
     group: ["Brian","Patricia","Connie"],
-    photo: "",
+    photo: "images/26.JPG",
   },
   {
     id: "27",
@@ -527,7 +527,7 @@ const ROOMS = [
     venue: "Steal and Escape (San Diego)",
     date: "2024-03-13",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 32.65965594815512, lng: -117.1025266749002,
     outcome: "escaped",
     group: ["Chris","Erdi"],
     photo: "images/44.jpeg",
