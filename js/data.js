@@ -187,7 +187,7 @@ const ROOMS = [
     venue: "Mindfox (San Diego)",
     date: "2022-12-07",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 32.89050380723482, lng: -117.16291356970721,   
     outcome: "escaped",
     rating: 3,
     group: ["Ann","Michelle","Brendan"],
@@ -196,10 +196,10 @@ const ROOMS = [
   {
     id: "16",
     name: "Haunting Before Christmas",
-    venue: "Two Trees (Oxnard)",
+    venue: "Two Trees (Ventura)",
     date: "2022-12-17",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.248074102808, lng: -119.19687903482969,
     outcome: "escaped",
     group: ["Brian","Shalvind","Robert","Danielle","Hemal"],
     photo: "",
@@ -221,7 +221,7 @@ const ROOMS = [
     venue: "Not Another Escape Room (Brea)",
     date: "2023-02-19",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.91678728572184, lng: -117.9120665912194,   
     outcome: "escaped",
     rating: 3,
     group: ["Huy L.","May","Ann"],
@@ -233,7 +233,7 @@ const ROOMS = [
     venue: "Escape Revolution (Melrose)",
     date: "2023-02-24",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.08326446025733, lng: -118.34495536583351,   
     outcome: "escaped",
     rating: 3,
     group: ["Brian","Raymond"],
@@ -245,7 +245,7 @@ const ROOMS = [
     venue: "Trivium Games (Emeryville)",
     date: "2023-03-24",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 37.83027383056046, lng: -122.27932524299888,  
     outcome: "failed",
     rating: 4,
     group: ["Brian","Raymond","Kevin","Kenny","Michael"],
@@ -257,7 +257,7 @@ const ROOMS = [
     venue: "Palace Games (San Francisco)",
     date: "2023-03-25",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 37.803249128533736, lng: -122.44930627374714,   
     outcome: "escaped",
     rating: 4,
     group: ["Brian","Raymond","Joseph","Michael Wu","Michael","Kenny"],
@@ -281,7 +281,7 @@ const ROOMS = [
     venue: "Breaking Point (Rancho Cucamonga)",
     date: "2023-06-04",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.10875960068034, lng: -117.57358293677164,  
     outcome: "escaped",
     group: ["Brian","Raymond","Chris","Steph"],
     rating: 2,
@@ -293,7 +293,7 @@ const ROOMS = [
     venue: "Hatch Escapes (Los Angeles)",
     date: "2023-07-08",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.039286970404405, lng: -118.32020747145692,
     outcome: "escaped",
     rating: 4,
     group: ["Brian","Raymond"],
@@ -316,7 +316,7 @@ const ROOMS = [
     venue: "Quest Tavern (Pomona)",
     date: "2023-09-10",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.108186283754065, lng: -117.74775319950692,
     outcome: "escaped",
     rating: 3,
     group: ["Brian","Patricia","Connie"],
@@ -328,7 +328,7 @@ const ROOMS = [
     venue: "Trapped (San Dimas)",
     date: "2023-09-10",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.108996442281665, lng: -117.82203323076168,
     outcome: "escaped",
     group: ["Brian","Patricia","Connie"],
     photo: "",
@@ -339,7 +339,7 @@ const ROOMS = [
     venue: "Lara's Labyrinth (San Diego)",
     date: "2023-09-12",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 32.74533958848072, lng: -117.1900920715523,
     outcome: "escaped",
     rating: 2,
     group: ["Erdi","Michael","Sean","Russel"],
@@ -351,7 +351,7 @@ const ROOMS = [
     venue: "The Hour Room (San Diego)",
     date: "2023-09-13",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 32.7161915289308, lng: -117.15897983023406,   
     outcome: "escaped",
     group: ["Michelle","Brendan"],
     photo: "",
@@ -362,7 +362,7 @@ const ROOMS = [
     venue: "The Ministry of Peculiarities (Azusa)",
     date: "2023-10-08",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.126375059591155, lng: -117.88964100259489,
     outcome: "escaped",
     rating: 4,
     group: ["Huy L.","May","Ann","Tee","Elly","Don"],
@@ -374,7 +374,7 @@ const ROOMS = [
     venue: "Quest Tavern (Pomona)",
     date: "2023-10-15",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.108186283754065, lng: -117.74775319950692,
     outcome: "escaped",
     rating: 3,
     group: ["Brian","Raymond","Chris","Steph"],
@@ -386,7 +386,7 @@ const ROOMS = [
     venue: "Escape 66 (Los Angeles)",
     date: "2023-10-28",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.052183680732924, lng: -118.37589334660584,
     outcome: "escaped",
     rating: 2,
     group: ["Brian"],
@@ -398,7 +398,7 @@ const ROOMS = [
     venue: "Stash House (Los Angeles)",
     date: "2023-11-04",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.069149027201206, lng: -118.30732481049128,
     outcome: "escaped",
     rating: 3,
     group: ["Brian","Raymond","Chris","Steph"],
@@ -410,7 +410,7 @@ const ROOMS = [
     venue: "Exit Games (Clearwater, Florida)",
     date: "2023-12-16",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 27.94898706229211, lng: -82.79816137580085,
     outcome: "escaped",
     group: ["Brian","Raymond"],
     rating: 5,
@@ -422,7 +422,7 @@ const ROOMS = [
     venue: "Exit Games (Clearwater, Florida)",
     date: "2023-12-16",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 27.94898706229211, lng: -82.79816137580085,
     outcome: "escaped",
     rating: 5,
     group: ["Brian","Raymond","Huy D."],
@@ -434,7 +434,7 @@ const ROOMS = [
     venue: "Escape Ventures (Orlando, Florida)",
     date: "2023-12-17",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 28.554437366976693, lng: -81.2089542514187,
     outcome: "escaped",
     rating: 2,
     group: ["Brian","Raymond","Huy D."],
@@ -446,7 +446,7 @@ const ROOMS = [
     venue: "Doldrick's Escape Room (Orlando, Florida)",
     date: "2023-12-17",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 28.33514621600461, lng: -81.47839222869695,
     outcome: "escaped",
     rating: 2,
     group: ["Brian","Raymond","Huy D."],
@@ -469,7 +469,7 @@ const ROOMS = [
     venue: "Boggled Escape Rooms (Calabasas)",
     date: "2024-01-28",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.15598233154891, lng: -118.65145133173777,
     outcome: "escaped",
     rating: 2,
     group: ["Brian","Kanate","Khiem","Kristine"],
@@ -481,7 +481,7 @@ const ROOMS = [
     venue: "Brain Games Escape Rooms (San Pedro)",
     date: "2024-02-04",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.73579261308727, lng: -118.29360882501624,
     outcome: "escaped",
     rating: 3,
     group: ["Brian","Raymond","Chris","Steph","Patricia"],
@@ -493,7 +493,7 @@ const ROOMS = [
     venue: "Breaking Point (Rancho Cucamonga)",
     date: "2024-02-11",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.10875960068034, lng: -117.57358293677164,
     outcome: "escaped",
     rating: 2,
     group: ["Patricia","Augustin"],
@@ -505,7 +505,7 @@ const ROOMS = [
     venue: "Exodus Escape (Rancho Cucamonga)",
     date: "2024-02-11",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.08515051205152, lng: -117.57104130444802,
     outcome: "escaped",
     group: ["Patricia","Augustin"],
     photo: "images/42.png",
@@ -516,7 +516,7 @@ const ROOMS = [
     venue: "Exodus Escape (Rancho Cucamonga)",
     date: "2024-02-11",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.08515051205152, lng: -117.57104130444802,
     outcome: "escaped",
     group: ["Patricia","Augustin"],
     photo: "images/43.png",
@@ -538,7 +538,7 @@ const ROOMS = [
     venue: "Quicksand Games (San Diego)",
     date: "2024-03-15",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 32.79717773870266, lng: -117.25145233291525,
     outcome: "escaped",
     group: ["Erdi","Michael","Rob","Derek","Ellen"],
     photo: "images/45_46.jpg",
@@ -549,7 +549,7 @@ const ROOMS = [
     venue: "Quicksand Games (San Diego)",
     date: "2024-03-15",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 32.79717773870266, lng: -117.25145233291525,
     outcome: "escaped",
     rating: 2,
     group: ["Sean","Derek","Jacob"],
@@ -561,7 +561,7 @@ const ROOMS = [
     venue: "Mazerooms (Culver City)",
     date: "2024-03-31",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.00324161852556, lng: -118.407879560097,
     outcome: "escaped",
     group: ["Patricia","Brian","Connie","Tee"],
     photo: "",
@@ -595,7 +595,7 @@ const ROOMS = [
     venue: "Escape Revolution (Melrose)",
     date: "2024-05-17",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.08326446025733, lng: -118.34495536583351,
     outcome: "failed",
     rating: 2,
     group: ["Brian","Raymond"],
@@ -607,7 +607,7 @@ const ROOMS = [
     venue: "Scenario Escape Room (Brea)",
     date: "2024-05-18",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.91919361843994, lng: -117.8645972207945,
     outcome: "escaped",
     group: ["Brian","Raymond"],
     photo: "",
@@ -618,7 +618,7 @@ const ROOMS = [
     venue: "Scenario Escape Room (Brea)",
     date: "2024-05-18",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.91919361843994, lng: -117.8645972207945,
     outcome: "escaped",
     rating: 2,
     group: ["Brian","Raymond"],
@@ -630,7 +630,7 @@ const ROOMS = [
     venue: "Red Lantern Escape Rooms (Brea)",
     date: "2024-06-07",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.925442010251935, lng: -117.90158545266922,
     outcome: "escaped",
     group: ["Brian","Raymond","Chris","Steph"],
     photo: "",
@@ -641,7 +641,7 @@ const ROOMS = [
     venue: "Red Lantern Escape Rooms (Brea)",
     date: "2024-06-07",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.925442010251935, lng: -117.90158545266922,
     outcome: "escaped",
     rating: 2,
     group: ["Brian","Raymond","Chris","Steph","Juan"],
@@ -675,7 +675,7 @@ const ROOMS = [
     venue: "101 Escape Rooms (Thousand Oaks)",
     date: "2024-07-14",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.18267121696603, lng: -118.8861040196625,
     outcome: "escaped",
     group: ["Brian"],
     photo: "",
@@ -686,7 +686,7 @@ const ROOMS = [
     venue: "101 Escape Rooms (Thousand Oaks)",
     date: "2024-07-28",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.18267121696603, lng: -118.8861040196625,
     outcome: "escaped",
     group: ["Brian"],
     photo: "",
@@ -697,7 +697,7 @@ const ROOMS = [
     venue: "101 Escape Rooms (Thousand Oaks)",
     date: "2024-07-28",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.18267121696603, lng: -118.8861040196625,
     outcome: "escaped",
     group: ["Brian"],
     photo: "",
@@ -708,7 +708,7 @@ const ROOMS = [
     venue: "Escape 66 (Los Angeles)",
     date: "2024-08-11",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.052183680732924, lng: -118.37589334660584,
     outcome: "escaped",
     rating: 2,
     group: ["Brian","Raymond"],
@@ -720,7 +720,7 @@ const ROOMS = [
     venue: "Escape 406 (Bozeman, Montana)",
     date: "2024-08-26",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 45.675050368233556, lng: -111.07012024901483,
     outcome: "escaped",
     group: ["Huy L."],
     photo: "",
@@ -731,7 +731,7 @@ const ROOMS = [
     venue: "Lara's Labyrinth (San Diego)",
     date: "2024-09-17",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 32.74533958848072, lng: -117.1900920715523,
     outcome: "escaped",
     group: ["Erdi","Chris","Ellen","Adam"],
     photo: "",
@@ -742,7 +742,7 @@ const ROOMS = [
     venue: "Lara's Labyrinth (San Diego)",
     date: "2024-09-17",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 32.74533958848072, lng: -117.1900920715523,
     outcome: "escaped",
     group: ["Erdi","Chris","Ellen","Jessica"],
     photo: "",
@@ -753,7 +753,7 @@ const ROOMS = [
     venue: "Arcane Escape Rooms (Santa Clarita)",
     date: "2024-10-04",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.37903220318563, lng: -118.54515667089805,
     outcome: "escaped",
     rating: 2,
     group: ["Brian"],
@@ -765,7 +765,7 @@ const ROOMS = [
     venue: "Infinity Escape (Fullerton)",
     date: "2024-10-18",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.8713267136275, lng: -117.92369571210372,
     outcome: "escaped",
     rating: 2,
     group: ["Brian","Raymond","Chris","Steph"],
@@ -777,7 +777,7 @@ const ROOMS = [
     venue: "Escapade Games (Fullerton)",
     date: "2024-10-18",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.87077482570862, lng: -117.90830659380788,
     outcome: "escaped",
     group: ["Brian","Raymond","Chris","Steph"],
     photo: "",
@@ -788,7 +788,7 @@ const ROOMS = [
     venue: "Boggled Escape Rooms (Calabasas)",
     date: "2024-10-27",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.15598233154891, lng: -118.65145133173777,
     outcome: "escaped",
     rating: 2,
     group: ["Brian","Khiem","Kristine"],
@@ -800,7 +800,7 @@ const ROOMS = [
     venue: "Locurio (Seattle)",
     date: "2024-11-10",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 47.650150080449095, lng: -122.35027863974214,
     outcome: "escaped",
     group: ["Ann","Leon","Jess"],
     rating: 3,
@@ -812,7 +812,7 @@ const ROOMS = [
     venue: "Escapology (Northridge)",
     date: "2024-11-23",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.24042833464455, lng: -118.55606051535831,
     outcome: "escaped",
     group: ["Jason","Johnny"],
     photo: "",
@@ -823,7 +823,7 @@ const ROOMS = [
     venue: "Quest Room (Redondo Beach)",
     date: "2024-11-29",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.87171929718951, lng: -118.35605181167068,
     outcome: "escaped",
     rating: 2,
     group: ["Ann","Tee","Elly"],
@@ -896,7 +896,7 @@ const ROOMS = [
     venue: "Breaking Point (Rancho Cucamonga)",
     date: "2025-02-09",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.10875960068034, lng: -117.57358293677164,
     outcome: "escaped",
     group: ["Brian","Chris","Steph"],
     photo: "images/76.jpg",
@@ -907,7 +907,7 @@ const ROOMS = [
     venue: "Quest Tavern (Pomona)",
     date: "2025-02-09",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.108186283754065, lng: -117.74775319950692,
     outcome: "escaped",
     rating: 2,
     group: ["Brian","Chris","Steph"],
@@ -919,7 +919,7 @@ const ROOMS = [
     venue: "Mazerooms (Culver City)",
     date: "2025-03-07",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.00324161852556, lng: -118.407879560097,
     outcome: "escaped",
     rating: 2,
     group: ["Brian","Raymond"],
@@ -931,7 +931,7 @@ const ROOMS = [
     venue: "Escape Room LA",
     date: "2025-03-07",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.041973186180186, lng: -118.25273675736912,
     outcome: "escaped",
     rating: 3,
     group: ["Brian","Raymond","Juan"],
@@ -943,7 +943,7 @@ const ROOMS = [
     venue: "Hatch Escapes (Los Angeles)",
     date: "2025-04-05",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.039286970404405, lng: -118.32020747145692,
     outcome: "escaped",
     rating: 3,
     group: ["Brian","Raymond","Juan","Chris","Steph","Khiem","Kristine"],
@@ -955,7 +955,7 @@ const ROOMS = [
     venue: "Escape Games (Torrance)",
     date: "2025-04-27",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.833454454428804, lng: -118.34743777289606,
     outcome: "escaped",
     rating: 3,
     group: ["Brian","Tee"],
@@ -967,7 +967,7 @@ const ROOMS = [
     venue: "Escape Games (Torrance)",
     date: "2025-04-27",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.833454454428804, lng: -118.34743777289606,
     outcome: "escaped",
     group: ["Brian","Tee"],
     photo: "",
@@ -978,7 +978,7 @@ const ROOMS = [
     venue: "Escape Duck (San Gabriel)",
     date: "2025-05-17",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.10401621629903, lng: -118.077745061339,
     outcome: "escaped",
     group: ["Brian","Raymond"],
     photo: "images/83_84.jpg",
@@ -989,7 +989,7 @@ const ROOMS = [
     venue: "Escape Duck (San Gabriel)",
     date: "2025-05-17",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.10401621629903, lng: -118.077745061339,
     outcome: "failed",
     group: ["Brian","Raymond"],
     photo: "images/83_84.jpg",
@@ -1000,7 +1000,7 @@ const ROOMS = [
     venue: "Escapology (Northridge)",
     date: "2025-05-25",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.24042833464455, lng: -118.55606051535831,
     outcome: "escaped",
     group: ["Jason","Johnny","Nick"],
     photo: "",
@@ -1011,7 +1011,7 @@ const ROOMS = [
     venue: "Quest Tavern (Pomona)",
     date: "2025-06-20",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.108186283754065, lng: -117.74775319950692,
     outcome: "escaped",
     group: ["Brian"],
     photo: "images/86.jpeg",
@@ -1022,7 +1022,7 @@ const ROOMS = [
     venue: "EscapeX (Irvine)",
     date: "2025-06-21",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.68956100258224, lng: -117.86335713251418,
     outcome: "escaped",
     rating: 2,
     group: ["Brian"],
@@ -1034,7 +1034,7 @@ const ROOMS = [
     venue: "Escape 66 (Laguna Hills)",
     date: "2025-06-21",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.62161893526735, lng: -117.71892068846796,
     outcome: "escaped",
     rating: 2,
     group: ["Brian"],
@@ -1046,7 +1046,7 @@ const ROOMS = [
     venue: "Escape 66 (Laguna Hills)",
     date: "2025-06-21",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.62161893526735, lng: -117.71892068846796,
     outcome: "escaped",
     group: ["Brian"],
     photo: "",
@@ -1057,7 +1057,7 @@ const ROOMS = [
     venue: "60out (Silverlake)",
     date: "2025-07-11",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.06728090638615, lng: -118.25560971305225,
     outcome: "escaped",
     group: ["Brian","Raymond"],
     photo: "",
@@ -1068,7 +1068,7 @@ const ROOMS = [
     venue: "Exodus Escape (Tustin)",
     date: "2025-07-12",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.732851679660456, lng: -117.83631411942031,
     outcome: "escaped",
     rating: 4,
     group: ["Brian","Raymond","Kanate"],
@@ -1080,7 +1080,7 @@ const ROOMS = [
     venue: "Red Door (Topanga)",
     date: "2025-08-09",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.18920824777321, lng: -118.6036536717577,
     outcome: "escaped",
     group: ["Brian","Longman"],
     photo: "",
@@ -1091,7 +1091,7 @@ const ROOMS = [
     venue: "Cloud Escape (Anaheim)",
     date: "2025-08-14",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.860431952221816, lng: -117.78774524358685,
     outcome: "escaped",
     rating: 2,
     group: ["Brian","Kevin"],
@@ -1103,7 +1103,7 @@ const ROOMS = [
     venue: "Nightwalker Caverns (San Diego)",
     date: "2025-09-09",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 32.75538381878997, lng: -117.05152334187324,
     outcome: "escaped",
     group: ["Ellen","Jessica","Ted","Michael","Jacob"],
     photo: "images/94.jpeg",
@@ -1114,7 +1114,7 @@ const ROOMS = [
     venue: "Appleseed Avenue (Santa Clarita)",
     date: "2025-09-13",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.37907428915265, lng: -118.54516096124746,
     outcome: "escaped",
     rating: 4,
     group: ["Brian","Raymond","Kanate"],
@@ -1126,7 +1126,7 @@ const ROOMS = [
     venue: "King's Eye Escape (Westminster)",
     date: "2025-11-09",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.76047243089403, lng: -118.01045540857926,
     outcome: "failed",
     group: ["Tee","Ann","Van"],
     photo: "",
@@ -1137,7 +1137,7 @@ const ROOMS = [
     venue: "Masterpiece Escapes (North Carolina)",
     date: "2025-12-16",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 35.07960727910218, lng: -80.65496260527945,
     outcome: "escaped",
     rating: 2,
     group: ["Brian","Raymond","Huy D."],
@@ -1149,7 +1149,7 @@ const ROOMS = [
     venue: "Masterpiece Escapes (North Carolina)",
     date: "2025-12-16",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 35.07960727910218, lng: -80.65496260527945,
     outcome: "escaped",
     group: ["Brian","Raymond","Huy D."],
     photo: "",
@@ -1160,7 +1160,7 @@ const ROOMS = [
     venue: "Keepers of Balance (Charlotte, North Carolina)",
     date: "2025-12-17",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 35.17906495230597, lng: -80.88493715429848,
     outcome: "escaped",
     rating: 3,
     group: ["Brian","Raymond","Huy D."],
@@ -1172,7 +1172,7 @@ const ROOMS = [
     venue: "Keepers of Balance (Charlotte, North Carolina)",
     date: "2025-12-17",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 35.17906495230597, lng: -80.88493715429848,
     outcome: "escaped",
     rating: 4,
     group: ["Brian","Raymond","Huy D."],
@@ -1184,7 +1184,7 @@ const ROOMS = [
     venue: "Escape Artists Hampton Station (Greensville, South Carolina)",
     date: "2025-12-18",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.86665812441537, lng: -82.41506992423902,
     outcome: "escaped",
     rating: 4,
     group: ["Brian","Raymond","Huy D."],
@@ -1196,7 +1196,7 @@ const ROOMS = [
     venue: "Escape Artists Hampton Station (Greensville, South Carolina)",
     date: "2025-12-18",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.86665812441537, lng: -82.41506992423902,
     outcome: "escaped",
     rating: 3,
     group: ["Brian","Raymond","Huy D."],
@@ -1208,7 +1208,7 @@ const ROOMS = [
     venue: "Escape Artists Hampton Station (Greensville, South Carolina)",
     date: "2025-12-18",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.86665812441537, lng: -82.41506992423902,
     outcome: "escaped",
     rating: 2,
     group: ["Brian","Raymond","Huy D."],
@@ -1220,7 +1220,7 @@ const ROOMS = [
     venue: "Escape Artists Downtown (Greensville, South Carolina)",
     date: "2025-12-18",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.86087864453587, lng: -82.39106859688421,   
     outcome: "escaped",
     rating: 3,
     group: ["Brian","Raymond","Huy D."],
@@ -1232,7 +1232,7 @@ const ROOMS = [
     venue: "Off the Couch (Fremont)",
     date: "2025-12-27",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 37.567936675431994, lng: -121.97314824454894,   
     outcome: "escaped",
     rating: 3,
     group: ["Huy L."],
@@ -1244,7 +1244,7 @@ const ROOMS = [
     venue: "60Out (HHLA)",
     date: "2026-01-02",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.97756773823028, lng: -118.39111813047397,
     outcome: "escaped",
     group: ["Huy L.","May","Ann","Tee","Elly"],
     photo: "",
@@ -1255,7 +1255,7 @@ const ROOMS = [
     venue: "Escapology (Northridge)",
     date: "2026-01-04",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.24042833464455, lng: -118.55606051535831,
     outcome: "escaped",
     group: ["Jason","Johnny","Nick"],
     photo: "",
@@ -1266,7 +1266,7 @@ const ROOMS = [
     venue: "Brain Games Escape Rooms (San Pedro)",
     date: "2026-01-16",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.73579261308727, lng: -118.29360882501624,
     outcome: "escaped",
     group: ["Brian","Raymond"],
     photo: "",
@@ -1277,7 +1277,7 @@ const ROOMS = [
     venue: "Brain Games Escape Rooms (San Pedro)",
     date: "2026-01-16",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.73579261308727, lng: -118.29360882501624,
     outcome: "escaped",
     rating: 3,
     group: ["Brian","Raymond"],
@@ -1289,7 +1289,7 @@ const ROOMS = [
     venue: "MindTrap (Murrieta)",
     date: "2026-01-17",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.57783045390654, lng: -117.20014451694018,
     outcome: "escaped",
     rating: 2,
     group: ["Brian","Raymond","Erdi"],
@@ -1301,7 +1301,7 @@ const ROOMS = [
     venue: "MindTrap (Murrieta)",
     date: "2026-01-17",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.57783045390654, lng: -117.20014451694018,
     outcome: "escaped",
     rating: 2,
     group: ["Brian","Raymond","Erdi"],
@@ -1313,7 +1313,7 @@ const ROOMS = [
     venue: "MindTrap (Murrieta)",
     date: "2026-01-17",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.57783045390654, lng: -117.20014451694018,
     outcome: "escaped",
     group: ["Brian","Raymond","Erdi"],
     photo: "images/112.jpeg",
@@ -1324,7 +1324,7 @@ const ROOMS = [
     venue: "MindTrap (Temecula)",
     date: "2026-01-17",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.5110125752608, lng: -117.1507619528632,
     outcome: "escaped",
     rating: 4,
     group: ["Brian","Raymond","Erdi"],
@@ -1336,7 +1336,7 @@ const ROOMS = [
     venue: "Curiosity Escapes (Menifee)",
     date: "2026-01-18",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.68833944981612, lng: -117.18771920205792,
     outcome: "escaped",
     rating: 2,
     group: ["Brian","Raymond"],
@@ -1348,7 +1348,7 @@ const ROOMS = [
     venue: "Beyond the Lock (Hemet)",
     date: "2026-01-18",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 33.748532927668755, lng: -116.92651651318936,
     outcome: "escaped",
     rating: 2,
     group: ["Brian","Raymond"],
@@ -1360,7 +1360,7 @@ const ROOMS = [
     venue: "Open Door (Redlands)",
     date: "2026-01-18",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.06573558438822, lng: -117.20495877469091,
     outcome: "escaped",
     rating: 3,
     group: ["Brian","Raymond"],
@@ -1372,7 +1372,7 @@ const ROOMS = [
     venue: "Red Door (Topanga)",
     date: "2026-02-07",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.18920824777321, lng: -118.6036536717577,
     outcome: "escaped",
     group: ["Brian"],
     photo: "images/117.jpeg",
@@ -1383,7 +1383,7 @@ const ROOMS = [
     venue: "Mazerooms (Robertson)",
     date: "2026-02-14",
     country: "United States",
-    lat: 0, lng: 0,  // ← add coordinates from Google Maps
+    lat: 34.060781419951205, lng: -118.38332055348391,
     outcome: "escaped",
     group: ["Huy L."],
     photo: "",

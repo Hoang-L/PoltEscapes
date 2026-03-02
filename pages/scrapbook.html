@@ -405,7 +405,7 @@
       <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;">
         <div>
           <div class="section-title">Scrapbook</div>
-          <div class="section-sub" style="margin:0;" id="view-hint">Hover a photo to reveal details</div>
+          <div class="section-sub" style="margin:0;" id="view-hint">Hover a photo to reveal details. Feel free to search your name!</div>
         </div>
         <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;">
           <div class="view-toggle">
@@ -490,7 +490,7 @@ function getFiltered() {
   // const diff    = document.getElementById('f-diff').value;
 
   return ROOMS.filter(r => {
-    if (q && !`${r.name} ${r.venue} ${r.city} ${r.review || ''}`.toLowerCase().includes(q)) return false;
+    if (q && !`${r.name} ${r.venue} ${r.city} ${r.review || ''} ${(r.group || []).join(' ')}`.toLowerCase().includes(q)) return false;
     if (outcome && r.outcome !== outcome) return false;
     if (country && r.country !== country) return false;
     // if (diff && r.difficulty !== diff) return false;
