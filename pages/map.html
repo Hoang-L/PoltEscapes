@@ -325,7 +325,8 @@ async function loadCountryBoundaries() {
         const visited = visitedCountries.has(feature.properties.name);
         if (visited) {
           const count = ROOMS.filter(r => r.country === feature.properties.name).length;
-          layer.bindTooltip(`${feature.properties.ADMIN} — ${count} room${count !== 1 ? 's' : ''}`, {
+          const countryName = feature.properties.name;
+          layer.bindTooltip(`${countryName} — ${count} room${count !== 1 ? 's' : ''}`, {
             sticky: true,
             className: 'state-tooltip'
           });
