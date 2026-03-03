@@ -167,6 +167,19 @@
     @media (max-width: 768px) {
       .map-sidebar { display: none; }
     }
+
+    .state-tooltip {
+  background: var(--bg-1);
+  border: 1px solid var(--border-hi);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  padding: 0.4rem 0.7rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+ }
+
+.state-tooltip::before { display: none; }
   </style>
 </head>
 <body>
@@ -219,6 +232,7 @@
 <script src="../js/nav.js"></script>
 <script src="../js/utils.js"></script>
 <script>
+
 injectNav('../');
 
 const map = L.map('map', {
@@ -233,6 +247,103 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
   maxZoom: 19,
   subdomains: 'abcd',
 }).addTo(map);
+
+async function loadStateBoundaries() {
+  try {
+    const res       = await fetch('https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json');
+    const statesGeo = await res.json();
+
+    const STATE_NAMES = {
+      AL:'Alabama', AK:'Alaska', AZ:'Arizona', AR:'Arkansas', CA:'California',
+      CO:'Colorado', CT:'Connecticut', DE:'Delaware', FL:'Florida', GA:'Georgia',
+      HI:'Hawaii', ID:'Idaho', IL:'Illinois', IN:'Indiana', IA:'Iowa',
+      KS:'Kansas', KY:'Kentucky', LA:'Louisiana', ME:'Maine', MD:'Maryland',
+      MA:'Massachusetts', MI:'Michigan', MN:'Minnesota', MS:'Mississippi', MO:'Missouri',
+      MT:'Montana', NE:'Nebraska', NV:'Nevada', NH:'New Hampshire', NJ:'New Jersey',
+      NM:'New Mexico', NY:'New York', NC:'North Carolina', ND:'North Dakota', OH:'Ohio',
+      OK:'Oklahoma', OR:'Oregon', PA:'Pennsylvania', RI:'Rhode Island', SC:'South Carolina',
+      SD:'South Dakota', TN:'Tennessee', TX:'Texas', UT:'Utah', VT:'Vermont',
+      VA:'Virginia', WA:'Washington', WV:'West Virginia', WI:'Wisconsin', WY:'Wyoming',
+      DC:'District of Columbia'
+    };
+
+    const visitedStateNames = new Set(
+      ROOMS.map(r => r.state ? STATE_NAMES[r.state] : null).filter(Boolean)
+    );
+
+    L.geoJSON(statesGeo, {
+      style(feature) {
+        const visited = visitedStateNames.has(feature.properties.name);
+        return {
+          fillColor:   visited ? '#6c63ff' : 'transparent',
+          fillOpacity: visited ? 0.2 : 0,
+          color:       visited ? '#6c63ff' : 'rgba(255,255,255,0.04)',
+          weight:      visited ? 1.5 : 0.5,
+        };
+      },
+      onEachFeature(feature, layer) {
+        const visited = visitedStateNames.has(feature.properties.name);
+        if (visited) {
+          const count = ROOMS.filter(r => STATE_NAMES[r.state] === feature.properties.name).length;
+          layer.bindTooltip(`${feature.properties.name} — ${count} room${count !== 1 ? 's' : ''}`, {
+            sticky: true,
+            className: 'state-tooltip'
+          });
+          layer.on('mouseover', function() { this.setStyle({ fillOpacity: 0.4 }); });
+          layer.on('mouseout',  function() { this.setStyle({ fillOpacity: 0.2 }); });
+        }
+      }
+    }).addTo(map);
+  } catch(e) {
+    console.log('Error:', e);
+  }
+}
+
+async function loadCountryBoundaries() {
+  try {
+    const res         = await fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson');
+    const countriesGeo = await res.json();
+
+    const visitedCountries = new Set(
+      ROOMS
+        .filter(r => r.country !== 'United States')
+        .map(r => r.country)
+        .filter(Boolean)
+    );
+
+    L.geoJSON(countriesGeo, {
+      style(feature) {
+        const visited = visitedCountries.has(feature.properties.name);
+        return {
+          fillColor:   visited ? '#6c63ff' : 'transparent',
+          fillOpacity: visited ? 0.2 : 0,
+          color:       visited ? '#6c63ff' : 'transparent',
+          weight:      visited ? 1.5 : 0,
+        };
+      },
+      onEachFeature(feature, layer) {
+        const visited = visitedCountries.has(feature.properties.name);
+        if (visited) {
+          const count = ROOMS.filter(r => r.country === feature.properties.name).length;
+          layer.bindTooltip(`${feature.properties.ADMIN} — ${count} room${count !== 1 ? 's' : ''}`, {
+            sticky: true,
+            className: 'state-tooltip'
+          });
+          layer.on('mouseover', function() { this.setStyle({ fillOpacity: 0.4 }); });
+          layer.on('mouseout',  function() { this.setStyle({ fillOpacity: 0.2 }); });
+        }
+      },
+      filter(feature) {
+        // Exclude United States since we handle that with states
+        return feature.properties.name !== 'United States of America';
+      }
+    }).addTo(map);
+  } catch(e) {
+    console.log('Error loading countries:', e);
+  }
+}
+
+loadCountryBoundaries();
 
 // Subtle attribution
 L.control.attribution({ prefix: false }).addTo(map);
@@ -291,13 +402,14 @@ function makeIcon(room) {
 }
 
 function makePopup(r) {
+  const photoSrc = r.photo ? `../${r.photo}` : '';
   return `<div class="popup-body">
+    ${photoSrc ? `<img src="${photoSrc}" alt="${r.name}" style="width:100%;height:140px;object-fit:cover;border-radius:6px;margin-bottom:0.75rem;" onerror="this.style.display='none'">` : ''}
     <div class="popup-name">${r.name}</div>
     <div class="popup-venue">${r.venue} · ${locationStr(r)}</div>
     <div class="popup-meta">
       ${outcomeBadge(r.outcome)}
       ${timeBadge(r.time)}
-      ${difficultyBadge(r.difficulty)}
     </div>
     ${r.rating ? `<div class="popup-stars">${starsHTML(r.rating)}</div>` : ''}
     ${r.review ? `<div class="popup-review">"${r.review}"</div>` : ''}
@@ -367,7 +479,7 @@ function renderMap() {
 
   filteredRooms.forEach((r, i) => {
     const marker = L.marker([r.lat, r.lng], { icon: makeIcon(r) })
-      .bindPopup(makePopup(r), { maxWidth: 280 });
+      .bindPopup(makePopup(r), { maxWidth: 320 });
 
     marker.on('click', () => {
       document.querySelectorAll('.sidebar-item').forEach((el, j) => {
@@ -411,6 +523,7 @@ function populateFilters() {
 
 populateFilters();
 renderMap();
+loadStateBoundaries();
 </script>
 </body>
 </html>

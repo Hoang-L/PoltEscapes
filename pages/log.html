@@ -217,7 +217,7 @@ function render() {
             <div class="detail-val">${r.review ? `"${r.review}"` : '<em style="color:var(--text-3)">No review yet</em>'}</div>
           </div>
           <div class="detail-section">
-            <div class="detail-label">Crew</div>
+            <div class="detail-label">Team</div>
             <div class="detail-val">${r.group?.length ? r.group.join(', ') : '<em style="color:var(--text-3)">Solo or unrecorded</em>'}</div>
             ${r.rating ? `<div class="detail-label" style="margin-top:0.8rem;">Rating</div>
             <div>${starsHTML(r.rating)}</div>` : ''}
