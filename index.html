@@ -70,6 +70,17 @@
 <script src="js/nav.js"></script>
 <script src="js/utils.js"></script>
 <script>
+
+function openLightbox(src) {
+  const lb  = document.getElementById('lightbox');
+  const img = document.getElementById('lightbox-img');
+  img.src      = src;
+  lb.style.display = 'flex';
+  lb.style.animation = 'none';
+  lb.offsetHeight; // force reflow
+  lb.style.animation = 'fadeIn 0.25s ease';
+}
+
 injectNav('');
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -89,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
   b.date.localeCompare(a.date) || String(b.id).localeCompare(String(a.id), undefined, {numeric: true})
 ).slice(0, 3);
   document.getElementById('recent-grid').innerHTML = recent.map((r, i) => `
-    <div class="card">
+    <div class="card" onclick="openLightbox('${r.photo}')" style="cursor:pointer;">
       <div class="card-img">${r.photo ? `<img src="${r.photo}" alt="${r.name}" style="width:100%;height:180px;object-fit:cover;">` : roomEmoji(i)}</div>
       <div class="card-content">
         <div class="card-meta">
@@ -102,9 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
         ${r.rating ? starsHTML(r.rating) : ''}
         ${r.review ? `<div class="card-review" style="margin-top:0.6rem;">"${r.review}"</div>` : ''}
         ${r.group?.length ? `<div class="card-crew" style="margin-top:0.6rem;">👥 ${r.group.join(', ')}</div>` : ''}
+        
       </div>
     </div>
   `).join('');
+
+  
 
   // Locations
   const locs = [...new Set(ROOMS.map(r => [r.city, r.state || r.country].filter(Boolean).join(', ')))].sort();
@@ -135,6 +149,29 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 .cta-card strong { font-size: 1rem; font-weight: 600; }
 .cta-card span { font-size: 0.8rem; color: var(--text-2); }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+#lightbox {
+  animation: fadeIn 0.25s ease;
+}
 </style>
+
+<div id="lightbox" onclick="this.style.display='none'" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.9);
+  z-index:9999;
+  cursor:pointer;
+  align-items:center;
+  justify-content:center;
+">
+  <img id="lightbox-img" style="max-width:90vw;max-height:90vh;object-fit:contain;border-radius:8px;box-shadow:0 0 60px rgba(0,0,0,0.8);">
+  <div style="position:absolute;top:1.5rem;right:1.5rem;color:white;font-size:1.5rem;opacity:0.6;">✕</div>
+</div>
 </body>
 </html>

@@ -392,6 +392,10 @@
     #grid-view.visible  { display: block; }
     #polar-view.visible { display: block; }
 
+    @keyframes fadeIn {
+     from { opacity: 0; }
+     to   { opacity: 1; }
+     }
   </style>
 </head>
 <body>
@@ -463,6 +467,17 @@
 <script src="../js/nav.js"></script>
 <script src="../js/utils.js"></script>
 <script>
+
+function openLightbox(src) {
+  const lb  = document.getElementById('lightbox');
+  const img = document.getElementById('lightbox-img');
+  img.src      = src;
+  lb.style.display = 'flex';
+  lb.style.animation = 'none';
+  lb.offsetHeight; // force reflow
+  lb.style.animation = 'fadeIn 0.25s ease';
+}
+
 injectNav('../');
 
 let sortMode   = 'date-desc';
@@ -489,8 +504,21 @@ function getFiltered() {
   const country = document.getElementById('f-country').value;
   // const diff    = document.getElementById('f-diff').value;
 
+  // Check if query exactly matches any teammate name across all rooms
+  const isTeammateSearch = q && ROOMS.some(r => 
+    (r.group || []).some(name => name.toLowerCase() === q)
+  );
+
   return ROOMS.filter(r => {
-    if (q && !`${r.name} ${r.venue} ${r.city} ${r.review || ''} ${(r.group || []).join(' ')}`.toLowerCase().includes(q)) return false;
+    if (q) {
+      if (isTeammateSearch) {
+        // Only match rooms where this person is in the group
+        if (!(r.group || []).some(name => name.toLowerCase() === q)) return false;
+      } else {
+        // Normal substring search across general fields
+        if (!`${r.name} ${r.venue} ${r.city} ${r.review || ''}`.toLowerCase().includes(q)) return false;
+      }
+    }
     if (outcome && r.outcome !== outcome) return false;
     if (country && r.country !== country) return false;
     // if (diff && r.difficulty !== diff) return false;
@@ -551,7 +579,7 @@ function renderPolaroids(rooms) {
 
     return `
     <div class="polaroid-wrap">
-      <div class="polaroid" style="--tilt:${tilt}deg; --tape-rot:${tapeRot}deg; box-shadow: 2px 3px 8px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.25), ${glow};">
+      <div class="polaroid" onclick="var img=this.querySelector('img');if(img)openLightbox(img.src);" style="--tilt:${tilt}deg; --tape-rot:${tapeRot}deg; box-shadow: 2px 3px 8px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.25), ${glow};">
         <div class="polaroid-dot" style="background:${dotColor}; box-shadow:0 0 5px ${dotColor};"></div>
         ${photoArea}
         <div class="polaroid-caption">
@@ -672,5 +700,19 @@ countries.forEach(c => {
 
 render();
 </script>
+
+<div id="lightbox" onclick="this.style.display='none'" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.9);
+  z-index:9999;
+  cursor:pointer;
+  align-items:center;
+  justify-content:center;
+">
+  <img id="lightbox-img" style="max-width:90vw;max-height:90vh;object-fit:contain;border-radius:8px;box-shadow:0 0 60px rgba(0,0,0,0.8);">
+  <div style="position:absolute;top:1.5rem;right:1.5rem;color:white;font-size:1.5rem;opacity:0.6;">✕</div>
+</div>
 </body>
 </html>
