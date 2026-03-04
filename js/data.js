@@ -817,7 +817,6 @@ const ROOMS = [
     country: "United States",
     lat: 34.37903220318563, lng: -118.54515667089805,
     outcome: "escaped",
-    rating: 2,
     group: ["Brian"],
     photo: "",
   },
@@ -1512,4 +1511,7 @@ function resolvePhoto(id) {
 // Auto-assign photo paths for any room missing one
 ROOMS.forEach(r => {
   if (!r.photo) r.photo = resolvePhoto(r.id);
+  ROOMS.forEach(r => {
+  if (!r.rating) r.rating = 1;
+});
 });

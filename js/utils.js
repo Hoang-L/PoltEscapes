@@ -1,7 +1,7 @@
 /* ===================== SHARED UTILITIES ===================== */
 
 const STAR_COLORS = {
-  1: null,
+  1: '#6060a0',
   2: '#facc15',
   3: '#f97316',
   4: '#22c55e',
@@ -23,9 +23,13 @@ function starsHTML(n, max = 5) {
   const style = color
     ? `color:${color};text-shadow:${glow};`
     : `color:var(--text-3);`;
-  let h = `<span class="stars" style="${style}">`;
+  let h = `<span class="stars">`;
   for (let i = 1; i <= max; i++) {
-    h += `<span${i <= n ? '' : ` style="color:var(--bg-3);text-shadow:none;"`}>★</span>`;
+   if (i <= n) {
+     h += `<span style="color:${color};text-shadow:${glow};">★</span>`;
+   } else {
+     h += `<span style="color:var(--bg-3);text-shadow:none;">★</span>`;
+   }
   }
   return h + '</span>';
 }
