@@ -123,7 +123,7 @@
               <th data-sort="location">Location</th>
               <th data-sort="outcome">Outcome</th>
               <!-- <th data-sort="difficulty">Difficulty</th> -->
-              <th data-sort="time">Time</th>
+              <!-- <th data-sort="time">Time</th> -->
               <th data-sort="rating">Rating</th>
             </tr>
           </thead>
@@ -205,8 +205,6 @@ function render() {
       <td class="td-date">${formatDate(r.date)}</td>
       <td class="td-loc">${locationStr(r)}</td>
       <td>${outcomeBadge(r.outcome)}</td>
-      <td>${difficultyBadge(r.difficulty) || '<span style="color:var(--text-3);">—</span>'}</td>
-      <td class="td-time">${timeBadge(r.time) || '<span style="color:var(--text-3);">—</span>'}</td>
       <td>${starsHTML(r.rating)}</td>
     </tr>
     <tr class="detail-row" id="detail-${i}">
