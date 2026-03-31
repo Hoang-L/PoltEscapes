@@ -1512,7 +1512,7 @@ const ROOMS = [
   },
   {
     id: "120",
-    name: "Hijinx at Joffre's Manor",
+    name: "Hijinx at Joffre Manor",
     venue: "Nerdy by Nature (Mission Viejo)",
     date: "2026-03-28",
     state: "CA",
