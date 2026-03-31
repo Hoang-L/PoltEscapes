@@ -1519,6 +1519,7 @@ const ROOMS = [
     country: "United States",
     lat: 33.61442533982727, lng: -117.68093634197648,
     outcome: "escaped",
+    rating: 3,
     group: ["Brian"],
     photo: "",
   },
@@ -1543,6 +1544,7 @@ const ROOMS = [
     country: "United States",
     lat: 33.65455898720947, lng: -117.99692710778913,
     outcome: "escaped",
+    rating: 2,
     group: ["Brian"],
     photo: "",
   }
