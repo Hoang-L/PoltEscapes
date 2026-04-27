@@ -1547,6 +1547,19 @@ const ROOMS = [
     rating: 2,
     group: ["Brian"],
     photo: "",
+  },
+  {
+    id: "123",
+    name: "Perfumer",
+    venue: "Questroom (Hollywood)",
+    date: "2026-04-26",
+    state: "CA",
+    country: "United States",
+    lat: 34.09114031321616, lng: -118.30989481391879,
+    outcome: "escaped",
+    rating: 2,
+    group: ["Jason","Johnny", "Nick"],
+    photo: "",
   }
 ];
 
