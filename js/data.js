@@ -1560,6 +1560,18 @@ const ROOMS = [
     rating: 2,
     group: ["Jason","Johnny", "Nick"],
     photo: "",
+  },
+  {
+    id: "124",
+    name: "Grandma's Master Plan",
+    venue: "60Out (Melrose)",
+    date: "2026-06-28",
+    state: "CA",
+    country: "United States",
+    lat: 34.08330623476786, lng: -118.34820181224072,
+    outcome: "escaped",
+    group: ["Brian","Longman"],
+    photo: "",
   }
 ];
 
