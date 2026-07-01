@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="../images/ghost.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wishlist Map</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <!-- Leaflet.markercluster -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
+
+  <style>
+    html, body, .page { height: 100%; }
+
+    .map-shell {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - var(--nav-h));
+    }
+
+    /* ---- filter bar ---- */
+    .map-filters {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: 0.75rem 1.25rem;
+      background: var(--bg-1);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    /* ---- map + sidebar ---- */
+    .map-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    #map {
+      flex: 1;
+      z-index: 1;
+    }
+
+    /* ---- sidebar ---- */
+    .map-sidebar {
+      width: 320px;
+      flex-shrink: 0;
+      background: var(--bg-1);
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar-header {
+      padding: 1rem 1.25rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .sidebar-header h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .sidebar-header p {
+      font-size: 0.78rem;
+      color: var(--text-3);
+      margin-top: 0.2rem;
+    }
+
+    .sidebar-list {
+      overflow-y: auto;
+      flex: 1;
+      padding: 0.5rem;
+    }
+
+    .sidebar-item {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      padding: 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background var(--transition);
+      border: 1px solid transparent;
+    }
+
+    .sidebar-item:hover {
+      background: var(--bg-2);
+      border-color: var(--border);
+    }
+
+    .sidebar-item.highlighted {
+      background: rgba(245,158,11,0.08);
+      border-color: rgba(245,158,11,0.25);
+    }
+
+    .si-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .si-info { flex: 1; min-width: 0; }
+    .si-name { font-weight: 500; font-size: 0.88rem; margin-bottom: 0.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .si-venue { font-size: 0.76rem; color: var(--text-2); font-style: italic; margin-bottom: 0.35rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .si-meta { display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
+
+    .badge-score {
+      color: var(--gold);
+      background: rgba(245,158,11,0.1);
+      border-color: rgba(245,158,11,0.2);
+    }
+
+    .badge-wishlist {
+      color: var(--gold);
+      background: rgba(245,158,11,0.1);
+      border-color: rgba(245,158,11,0.2);
+    }
+
+    /* ---- Leaflet overrides ---- */
+    .leaflet-tile-pane { filter: brightness(0.45) saturate(0.5); }
+
+    .leaflet-popup-content-wrapper {
+      background: var(--bg-1) !important;
+      border: 1px solid var(--border-hi) !important;
+      border-radius: var(--radius) !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.6) !important;
+      color: var(--text) !important;
+    }
+
+    .leaflet-popup-tip { background: var(--bg-1) !important; }
+
+    .popup-body { padding: 0.25rem 0; min-width: 200px; }
+    .popup-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.2rem; }
+    .popup-venue { font-size: 0.8rem; color: var(--text-2); font-style: italic; margin-bottom: 0.6rem; }
+    .popup-meta { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.6rem; align-items: center; }
+    .popup-notes { font-size: 0.8rem; color: var(--text-2); line-height: 1.5; font-style: italic; }
+    .popup-link {
+      display: inline-block;
+      margin-top: 0.6rem;
+      font-size: 0.78rem;
+      color: var(--gold);
+      border: 1px solid rgba(245,158,11,0.3);
+      background: rgba(245,158,11,0.08);
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+    }
+    .popup-link:hover { background: rgba(245,158,11,0.16); }
+
+    /* Cluster overrides — gold theme so it reads as "wishlist" not "log" */
+    .marker-cluster-small, .marker-cluster-medium, .marker-cluster-large {
+      background: rgba(245,158,11,0.25) !important;
+    }
+    .marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div {
+      background: rgba(245,158,11,0.75) !important;
+      color: #1a1305 !important;
+      font-family: 'Syne', sans-serif !important;
+      font-weight: 700 !important;
+    }
+
+    /* Responsive: collapse sidebar */
+    @media (max-width: 768px) {
+      .map-sidebar { display: none; }
+    }
+
+    .state-tooltip {
+      background: var(--bg-1);
+      border: 1px solid var(--border-hi);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      padding: 0.4rem 0.7rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    .state-tooltip::before { display: none; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="map-shell">
+
+    <!-- Filter bar -->
+    <div class="map-filters">
+      <span class="filter-label">Filter</span>
+      <input type="text" class="filter-input" id="f-search" placeholder="Search rooms, venues…" style="min-width:200px;">
+      <select class="filter-select" id="f-country">
+        <option value="">All Countries</option>
+      </select>
+      <select class="filter-select" id="f-sort">
+        <option value="score-desc">Sort: Community Score</option>
+        <option value="name-asc">Sort: Name A–Z</option>
+      </select>
+      <span class="filter-count" id="map-count"></span>
+    </div>
+
+    <!-- Map + Sidebar -->
+    <div class="map-body">
+      <div id="map"></div>
+      <div class="map-sidebar">
+        <div class="sidebar-header">
+          <h3>⭐ Wishlist</h3>
+          <p id="sidebar-count">Loading…</p>
+          <p id="pending-count" style="color:var(--text-3);margin-top:0.15rem;"></p>
+        </div>
+        <div class="sidebar-list" id="sidebar-list"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../js/wishlist-data.js"></script>
+<script src="../js/nav.js"></script>
+<script src="../js/utils.js"></script>
+<script>
+
+injectNav('../');
+
+const map = L.map('map', {
+  center: [38, -20],
+  zoom: 3,
+  zoomControl: true,
+  attributionControl: false,
+});
+
+// Dark tile layer (CartoDB Dark Matter) — same base as the main map
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  maxZoom: 19,
+  subdomains: 'abcd',
+}).addTo(map);
+
+async function loadStateBoundaries() {
+  try {
+    const res       = await fetch('https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json');
+    const statesGeo = await res.json();
+
+    const STATE_NAMES = {
+      AL:'Alabama', AK:'Alaska', AZ:'Arizona', AR:'Arkansas', CA:'California',
+      CO:'Colorado', CT:'Connecticut', DE:'Delaware', FL:'Florida', GA:'Georgia',
+      HI:'Hawaii', ID:'Idaho', IL:'Illinois', IN:'Indiana', IA:'Iowa',
+      KS:'Kansas', KY:'Kentucky', LA:'Louisiana', ME:'Maine', MD:'Maryland',
+      MA:'Massachusetts', MI:'Michigan', MN:'Minnesota', MS:'Mississippi', MO:'Missouri',
+      MT:'Montana', NE:'Nebraska', NV:'Nevada', NH:'New Hampshire', NJ:'New Jersey',
+      NM:'New Mexico', NY:'New York', NC:'North Carolina', ND:'North Dakota', OH:'Ohio',
+      OK:'Oklahoma', OR:'Oregon', PA:'Pennsylvania', RI:'Rhode Island', SC:'South Carolina',
+      SD:'South Dakota', TN:'Tennessee', TX:'Texas', UT:'Utah', VT:'Vermont',
+      VA:'Virginia', WA:'Washington', WV:'West Virginia', WI:'Wisconsin', WY:'Wyoming',
+      DC:'District of Columbia'
+    };
+
+    const wishlistedStateNames = new Set(
+      WISHLIST.map(r => r.state ? STATE_NAMES[r.state] : null).filter(Boolean)
+    );
+
+    L.geoJSON(statesGeo, {
+      style(feature) {
+        const wishlisted = wishlistedStateNames.has(feature.properties.name);
+        return {
+          fillColor:   wishlisted ? '#f59e0b' : 'transparent',
+          fillOpacity: wishlisted ? 0.15 : 0,
+          color:       wishlisted ? '#f59e0b' : 'rgba(255,255,255,0.04)',
+          weight:      wishlisted ? 1.5 : 0.5,
+        };
+      },
+      onEachFeature(feature, layer) {
+        const wishlisted = wishlistedStateNames.has(feature.properties.name);
+        if (wishlisted) {
+          const count = WISHLIST.filter(r => STATE_NAMES[r.state] === feature.properties.name).length;
+          layer.bindTooltip(`${feature.properties.name} — ${count} wishlisted`, {
+            sticky: true,
+            className: 'state-tooltip'
+          });
+          layer.on('mouseover', function() { this.setStyle({ fillOpacity: 0.3 }); });
+          layer.on('mouseout',  function() { this.setStyle({ fillOpacity: 0.15 }); });
+        }
+      }
+    }).addTo(map);
+  } catch(e) {
+    console.log('Error:', e);
+  }
+}
+
+async function loadCountryBoundaries() {
+  try {
+    const res         = await fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson');
+    const countriesGeo = await res.json();
+
+    const wishlistedCountries = new Set(
+      WISHLIST
+        .filter(r => r.country !== 'United States')
+        .map(r => r.country)
+        .filter(Boolean)
+    );
+
+    L.geoJSON(countriesGeo, {
+      style(feature) {
+        const wishlisted = wishlistedCountries.has(feature.properties.name);
+        return {
+          fillColor:   wishlisted ? '#f59e0b' : 'transparent',
+          fillOpacity: wishlisted ? 0.15 : 0,
+          color:       wishlisted ? '#f59e0b' : 'transparent',
+          weight:      wishlisted ? 1.5 : 0,
+        };
+      },
+      onEachFeature(feature, layer) {
+        const wishlisted = wishlistedCountries.has(feature.properties.name);
+        if (wishlisted) {
+          const count = WISHLIST.filter(r => r.country === feature.properties.name).length;
+          const countryName = feature.properties.name;
+          layer.bindTooltip(`${countryName} — ${count} wishlisted`, {
+            sticky: true,
+            className: 'state-tooltip'
+          });
+          layer.on('mouseover', function() { this.setStyle({ fillOpacity: 0.3 }); });
+          layer.on('mouseout',  function() { this.setStyle({ fillOpacity: 0.15 }); });
+        }
+      },
+      filter(feature) {
+        // Exclude United States since we handle that with states
+        return feature.properties.name !== 'United States of America';
+      }
+    }).addTo(map);
+  } catch(e) {
+    console.log('Error loading countries:', e);
+  }
+}
+
+loadCountryBoundaries();
+
+// Subtle attribution
+L.control.attribution({ prefix: false }).addTo(map);
+map.attributionControl.addAttribution('© <a href="https://carto.com">CARTO</a> © <a href="https://openstreetmap.org">OSM</a>');
+
+// Marker cluster group
+const clusterGroup = L.markerClusterGroup({
+  maxClusterRadius: 60,
+  spiderfyOnMaxZoom: true,
+  showCoverageOnHover: false,
+  zoomToBoundsOnClick: true,
+  iconCreateFunction(cluster) {
+    const count = cluster.getChildCount();
+    const size = count < 5 ? 36 : count < 15 ? 44 : 52;
+    return L.divIcon({
+      html: `<div style="
+        width:${size}px;height:${size}px;
+        background:rgba(245,158,11,0.85);
+        border:2px solid rgba(255,255,255,0.2);
+        border-radius:50%;
+        display:flex;align-items:center;justify-content:center;
+        font-family:'Syne',sans-serif;font-weight:700;font-size:${size < 44 ? 12 : 14}px;
+        color:#1a1305;
+        box-shadow:0 0 16px rgba(245,158,11,0.5);
+      ">${count}</div>`,
+      className: '',
+      iconSize: [size, size],
+      iconAnchor: [size/2, size/2],
+    });
+  }
+});
+map.addLayer(clusterGroup);
+
+let currentMarkers = [];
+
+function makeIcon() {
+  return L.divIcon({
+    html: `<div style="
+      width:28px;height:28px;
+      background:#f59e0b;
+      border:2px solid rgba(255,255,255,0.3);
+      border-radius:50% 50% 50% 0;
+      transform:rotate(-45deg);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 2px 12px rgba(245,158,11,0.6);
+    "><span style="transform:rotate(45deg);font-size:12px;">⭐</span></div>`,
+    className: '',
+    iconSize: [28, 28],
+    iconAnchor: [14, 28],
+    popupAnchor: [0, -28],
+  });
+}
+
+function makePopup(r) {
+  const photoSrc = r.photo ? (r.photo.startsWith('http') ? r.photo : `../${r.photo}`) : '';
+  return `<div class="popup-body">
+    ${photoSrc ? `<img src="${photoSrc}" alt="${r.name}" style="width:100%;height:140px;object-fit:cover;border-radius:6px;margin-bottom:0.75rem;" onerror="this.style.display='none'">` : ''}
+    <div class="popup-name">${r.name}</div>
+    <div class="popup-venue">${r.venue} · ${locationStr(r)}</div>
+    <div class="popup-meta">
+      <span class="badge badge-wishlist">⭐ Wishlisted</span>
+      ${r.score ? `<span class="badge badge-score">${r.score} score</span>` : ''}
+    </div>
+    ${r.notes ? `<div class="popup-notes">"${r.notes}"</div>` : ''}
+    ${r.url ? `<a class="popup-link" href="${r.url}" target="_blank" rel="noopener">View on Morty →</a>` : ''}
+  </div>`;
+}
+
+function getFiltered() {
+  const q       = document.getElementById('f-search').value.toLowerCase();
+  const country = document.getElementById('f-country').value;
+
+  return WISHLIST.filter(r => {
+    if (!r.lat && !r.lng) return false; // not geocoded yet — skip on map
+    if (q && !`${r.name} ${r.venue} ${r.city || ''} ${r.state || ''} ${r.country || ''}`.toLowerCase().includes(q)) return false;
+    if (country && r.country !== country) return false;
+    return true;
+  });
+}
+
+function getSorted(rooms) {
+  const sort = document.getElementById('f-sort').value;
+  return [...rooms].sort((a, b) => {
+    if (sort === 'name-asc') return a.name.localeCompare(b.name);
+    return (b.score || 0) - (a.score || 0);
+  });
+}
+
+function renderSidebar(rooms) {
+  const el = document.getElementById('sidebar-list');
+  const pending = WISHLIST.length - WISHLIST.filter(r => r.lat || r.lng).length;
+  document.getElementById('sidebar-count').textContent = `${rooms.length} room${rooms.length !== 1 ? 's' : ''} shown`;
+  document.getElementById('pending-count').textContent = pending ? `${pending} more not yet located` : '';
+  document.getElementById('map-count').textContent = `${rooms.length} room${rooms.length !== 1 ? 's' : ''}`;
+
+  if (!rooms.length) {
+    el.innerHTML = '<div class="empty"><div class="icon">🔍</div><p>No rooms match filters</p></div>';
+    return;
+  }
+
+  el.innerHTML = rooms.map((r, i) => `
+    <div class="sidebar-item" data-idx="${i}" onclick="focusMarker(${i})">
+      <div class="si-icon">⭐</div>
+      <div class="si-info">
+        <div class="si-name">${r.name}</div>
+        <div class="si-venue">${r.venue}</div>
+        <div class="si-meta">
+          ${r.score ? `<span class="badge badge-score">${r.score}</span>` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+let filteredRooms = [];
+
+function focusMarker(i) {
+  const marker = currentMarkers[i];
+  if (!marker) return;
+  map.setView(marker.getLatLng(), 13, { animate: true });
+  setTimeout(() => marker.openPopup(), 400);
+  document.querySelectorAll('.sidebar-item').forEach((el, j) => {
+    el.classList.toggle('highlighted', j === i);
+  });
+  const item = document.querySelector(`.sidebar-item[data-idx="${i}"]`);
+  item?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+
+function renderMap() {
+  clusterGroup.clearLayers();
+  currentMarkers = [];
+  filteredRooms = getSorted(getFiltered());
+
+  filteredRooms.forEach((r, i) => {
+    const marker = L.marker([r.lat, r.lng], { icon: makeIcon() })
+      .bindPopup(makePopup(r), { maxWidth: 320 });
+
+    marker.on('click', () => {
+      document.querySelectorAll('.sidebar-item').forEach((el, j) => {
+        el.classList.toggle('highlighted', j === i);
+      });
+      const item = document.querySelector(`.sidebar-item[data-idx="${i}"]`);
+      item?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
+
+    clusterGroup.addLayer(marker);
+    currentMarkers.push(marker);
+  });
+
+  renderSidebar(filteredRooms);
+
+  if (filteredRooms.length) {
+    const latlngs = filteredRooms.map(r => [r.lat, r.lng]);
+    if (filteredRooms.length === 1) {
+      map.setView(latlngs[0], 12);
+    } else {
+      map.fitBounds(latlngs, { padding: [60, 60], maxZoom: 12 });
+    }
+  }
+}
+
+// Populate country filter
+function populateFilters() {
+  const countries = [...new Set(WISHLIST.map(r => r.country))].filter(Boolean).sort();
+  const sel = document.getElementById('f-country');
+  countries.forEach(c => {
+    const o = document.createElement('option');
+    o.value = c; o.textContent = c;
+    sel.appendChild(o);
+  });
+}
+
+['f-search', 'f-country', 'f-sort'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', renderMap);
+});
+
+populateFilters();
+renderMap();
+loadStateBoundaries();
+</script>
+</body>
+</html>
