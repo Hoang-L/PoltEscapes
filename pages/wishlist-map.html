@@ -186,6 +186,168 @@
     }
 
     .state-tooltip::before { display: none; }
+
+    /* ---- trip planner ---- */
+    .trip-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      color: var(--text-2);
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+    .trip-toggle-btn:hover { border-color: var(--gold); color: var(--text); }
+    .trip-toggle-btn.active {
+      background: rgba(245,158,11,0.15);
+      border-color: rgba(245,158,11,0.4);
+      color: var(--gold);
+    }
+
+    .trips-panel {
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-2);
+      padding: 0.75rem 1.25rem;
+      display: none;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .trips-panel.open { display: flex; }
+    .trips-panel-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-right: 0.25rem;
+    }
+    .trip-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      padding: 0.3rem 0.5rem 0.3rem 0.7rem;
+      border-radius: 99px;
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      color: var(--text-2);
+      cursor: pointer;
+    }
+    .trip-chip:hover { border-color: var(--gold); color: var(--text); }
+    .trip-chip.viewing {
+      background: rgba(245,158,11,0.15);
+      border-color: rgba(245,158,11,0.4);
+      color: var(--gold);
+    }
+    .trip-chip .trip-x {
+      opacity: 0.5;
+      font-size: 0.85rem;
+      padding: 0 0.1rem;
+    }
+    .trip-chip .trip-x:hover { opacity: 1; color: var(--fail); }
+    .trips-panel-empty { font-size: 0.78rem; color: var(--text-3); font-style: italic; }
+
+    .trip-viewing-banner {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.6rem 1.25rem;
+      background: rgba(245,158,11,0.1);
+      border-bottom: 1px solid rgba(245,158,11,0.3);
+      font-size: 0.82rem;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+    .trip-viewing-banner.open { display: flex; }
+    .trip-viewing-banner button {
+      background: transparent;
+      border: 1px solid rgba(245,158,11,0.4);
+      color: var(--gold);
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+    }
+    .trip-viewing-banner button:hover { background: rgba(245,158,11,0.15); }
+
+    /* Selection checkbox on sidebar items (trip-building mode) */
+    .si-checkbox {
+      display: none;
+      flex-shrink: 0;
+      width: 20px; height: 20px;
+      border-radius: 5px;
+      border: 2px solid var(--border-hi);
+      margin-top: 0.15rem;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: transparent;
+      transition: all var(--transition);
+    }
+    body.trip-mode .si-checkbox { display: flex; }
+    body.trip-mode .si-icon { display: none; }
+    .sidebar-item.selected-for-trip .si-checkbox {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #1a1305;
+    }
+    .sidebar-item.selected-for-trip { background: rgba(245,158,11,0.06); }
+
+    /* Floating selection tray */
+    .trip-tray {
+      display: none;
+      flex-direction: column;
+      gap: 0.6rem;
+      padding: 0.9rem 1.25rem;
+      background: var(--bg-2);
+      border-top: 1px solid var(--border-hi);
+      flex-shrink: 0;
+    }
+    body.trip-mode .trip-tray { display: flex; }
+    .trip-tray-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .trip-tray-count { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+    .trip-tray-actions { display: flex; gap: 0.5rem; }
+    .trip-tray-btn {
+      font-size: 0.78rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-3);
+      color: var(--text-2);
+    }
+    .trip-tray-btn:hover { color: var(--text); border-color: var(--border-hi); }
+    .trip-tray-btn.primary {
+      background: rgba(245,158,11,0.15);
+      border-color: rgba(245,158,11,0.4);
+      color: var(--gold);
+    }
+    .trip-tray-btn.primary:hover { background: rgba(245,158,11,0.25); }
+    .trip-tray-btn:disabled { opacity: 0.4; pointer-events: none; }
+
+    .trip-name-input {
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      padding: 0.4rem 0.7rem;
+      outline: none;
+      display: none;
+    }
+    .trip-name-input.open { display: block; }
+    .trip-name-input:focus { border-color: var(--gold); }
   </style>
 </head>
 <body>
@@ -199,11 +361,28 @@
       <select class="filter-select" id="f-country">
         <option value="">All Countries</option>
       </select>
+      <select class="filter-select" id="f-state">
+        <option value="">All States</option>
+      </select>
       <select class="filter-select" id="f-sort">
         <option value="score-desc">Sort: Community Score</option>
         <option value="name-asc">Sort: Name A–Z</option>
       </select>
+      <button class="trip-toggle-btn" id="trip-toggle">Trip Planner</button>
+      <button class="trip-toggle-btn" id="trips-toggle">Saved Trips <span id="trips-badge"></span></button>
       <span class="filter-count" id="map-count"></span>
+    </div>
+
+    <!-- Saved trips panel -->
+    <div class="trips-panel" id="trips-panel">
+      <span class="trips-panel-label">Saved Trips</span>
+      <span id="trips-list"></span>
+    </div>
+
+    <!-- Viewing-a-trip banner -->
+    <div class="trip-viewing-banner" id="trip-banner">
+      <span id="trip-banner-text"></span>
+      <button onclick="exitTripView()">Exit Trip View</button>
     </div>
 
     <!-- Map + Sidebar -->
@@ -216,6 +395,16 @@
           <p id="pending-count" style="color:var(--text-3);margin-top:0.15rem;"></p>
         </div>
         <div class="sidebar-list" id="sidebar-list"></div>
+        <div class="trip-tray" id="trip-tray">
+          <div class="trip-tray-row">
+            <span class="trip-tray-count" id="trip-tray-count">0 selected</span>
+            <div class="trip-tray-actions">
+              <button class="trip-tray-btn" id="trip-clear-btn" onclick="clearTripSelection()">Clear</button>
+              <button class="trip-tray-btn primary" id="trip-save-btn" onclick="beginSaveTrip()" disabled>Save as Trip</button>
+            </div>
+          </div>
+          <input type="text" class="trip-name-input" id="trip-name-input" placeholder="Name this trip… (e.g. Barcelona Weekend)" onkeydown="if(event.key==='Enter') confirmSaveTrip()">
+        </div>
       </div>
     </div>
 
@@ -373,6 +562,8 @@ const clusterGroup = L.markerClusterGroup({
 map.addLayer(clusterGroup);
 
 let currentMarkers = [];
+let filteredRooms = [];
+let routeLine = null;
 
 function makeIcon() {
   return L.divIcon({
@@ -410,11 +601,18 @@ function makePopup(r) {
 function getFiltered() {
   const q       = document.getElementById('f-search').value.toLowerCase();
   const country = document.getElementById('f-country').value;
+  const state   = document.getElementById('f-state').value;
+
+  // If actively viewing a saved trip, that overrides all other filters
+  if (activeTripView) {
+    return WISHLIST.filter(r => activeTripView.ids.includes(r.id));
+  }
 
   return WISHLIST.filter(r => {
     if (!r.lat && !r.lng) return false; // not geocoded yet — skip on map
     if (q && !`${r.name} ${r.venue} ${r.city || ''} ${r.state || ''} ${r.country || ''}`.toLowerCase().includes(q)) return false;
     if (country && r.country !== country) return false;
+    if (state && r.state !== state) return false;
     return true;
   });
 }
@@ -440,8 +638,9 @@ function renderSidebar(rooms) {
   }
 
   el.innerHTML = rooms.map((r, i) => `
-    <div class="sidebar-item" data-idx="${i}" onclick="focusMarker(${i})">
+    <div class="sidebar-item ${selectedForTrip.has(r.id) ? 'selected-for-trip' : ''}" data-idx="${i}" onclick="sidebarItemClick(${i}, '${r.id}')">
       <div class="si-icon">⭐</div>
+      <div class="si-checkbox">✓</div>
       <div class="si-info">
         <div class="si-name">${r.name}</div>
         <div class="si-venue">${r.venue}</div>
@@ -453,7 +652,13 @@ function renderSidebar(rooms) {
   `).join('');
 }
 
-let filteredRooms = [];
+function sidebarItemClick(i, roomId) {
+  if (tripMode) {
+    toggleTripSelection(roomId);
+  } else {
+    focusMarker(i);
+  }
+}
 
 function focusMarker(i) {
   const marker = currentMarkers[i];
@@ -490,6 +695,21 @@ function renderMap() {
 
   renderSidebar(filteredRooms);
 
+  // Draw a connecting route when viewing a saved trip (order = save order)
+  if (routeLine) { map.removeLayer(routeLine); routeLine = null; }
+  if (activeTripView && filteredRooms.length > 1) {
+    const orderedLatLngs = activeTripView.ids
+      .map(id => WISHLIST.find(r => r.id === id))
+      .filter(r => r && r.lat && r.lng)
+      .map(r => [r.lat, r.lng]);
+    routeLine = L.polyline(orderedLatLngs, {
+      color: '#f59e0b',
+      weight: 2,
+      opacity: 0.6,
+      dashArray: '6,8',
+    }).addTo(map);
+  }
+
   if (filteredRooms.length) {
     const latlngs = filteredRooms.map(r => [r.lat, r.lng]);
     if (filteredRooms.length === 1) {
@@ -500,24 +720,173 @@ function renderMap() {
   }
 }
 
-// Populate country filter
+// Populate country + state filters
 function populateFilters() {
   const countries = [...new Set(WISHLIST.map(r => r.country))].filter(Boolean).sort();
-  const sel = document.getElementById('f-country');
+  const cSel = document.getElementById('f-country');
   countries.forEach(c => {
     const o = document.createElement('option');
     o.value = c; o.textContent = c;
-    sel.appendChild(o);
+    cSel.appendChild(o);
+  });
+
+  const states = [...new Set(WISHLIST.map(r => r.state))].filter(Boolean).sort();
+  const sSel = document.getElementById('f-state');
+  states.forEach(s => {
+    const o = document.createElement('option');
+    o.value = s; o.textContent = s;
+    sSel.appendChild(o);
   });
 }
 
-['f-search', 'f-country', 'f-sort'].forEach(id => {
+/* =====================================================================
+   TRIP PLANNER
+   Select multiple wishlist rooms and save them as a named "trip" group.
+   Trips persist in localStorage (this is a static self-hosted page, not
+   a sandboxed artifact, so localStorage is safe to use here).
+===================================================================== */
+let tripMode = false;
+let selectedForTrip = new Set();
+let activeTripView = null; // { id, name, ids } when actively viewing a saved trip
+
+const TRIPS_KEY = 'poltescapes_wishlist_trips';
+
+function loadTrips() {
+  try {
+    const raw = localStorage.getItem(TRIPS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveTrips(trips) {
+  try {
+    localStorage.setItem(TRIPS_KEY, JSON.stringify(trips));
+  } catch (e) {
+    console.error('Could not save trips', e);
+  }
+}
+
+function toggleTripPlannerMode() {
+  tripMode = !tripMode;
+  document.body.classList.toggle('trip-mode', tripMode);
+  document.getElementById('trip-toggle').classList.toggle('active', tripMode);
+  if (!tripMode) clearTripSelection();
+  renderSidebar(filteredRooms);
+}
+
+function toggleTripSelection(roomId) {
+  if (selectedForTrip.has(roomId)) selectedForTrip.delete(roomId);
+  else selectedForTrip.add(roomId);
+  updateTripTray();
+  renderSidebar(filteredRooms);
+}
+
+function clearTripSelection() {
+  selectedForTrip.clear();
+  document.getElementById('trip-name-input').classList.remove('open');
+  updateTripTray();
+  renderSidebar(filteredRooms);
+}
+
+function updateTripTray() {
+  const n = selectedForTrip.size;
+  document.getElementById('trip-tray-count').textContent = `${n} selected`;
+  document.getElementById('trip-save-btn').disabled = n < 2;
+}
+
+function beginSaveTrip() {
+  const input = document.getElementById('trip-name-input');
+  input.classList.add('open');
+  input.value = '';
+  input.focus();
+}
+
+function confirmSaveTrip() {
+  const input = document.getElementById('trip-name-input');
+  const name = input.value.trim();
+  if (!name) { input.focus(); return; }
+
+  const trips = loadTrips();
+  trips.push({
+    id: 'trip_' + Date.now(),
+    name,
+    ids: [...selectedForTrip],
+    created: new Date().toISOString(),
+  });
+  saveTrips(trips);
+
+  input.classList.remove('open');
+  clearTripSelection();
+  toggleTripPlannerMode(); // exit trip-building mode
+  renderTripsPanel();
+  viewTrip(trips[trips.length - 1].id); // jump straight into viewing the new trip
+}
+
+function renderTripsPanel() {
+  const trips = loadTrips();
+  document.getElementById('trips-badge').textContent = trips.length ? `(${trips.length})` : '';
+  const listEl = document.getElementById('trips-list');
+
+  if (!trips.length) {
+    listEl.innerHTML = '<span class="trips-panel-empty">No saved trips yet — use "Plan a Trip" to select rooms and group them.</span>';
+    return;
+  }
+
+  listEl.innerHTML = trips.map(t => `
+    <span class="trip-chip ${activeTripView?.id === t.id ? 'viewing' : ''}" onclick="viewTrip('${t.id}')">
+      🧳 ${t.name} <span style="opacity:0.6;">(${t.ids.length})</span>
+      <span class="trip-x" onclick="event.stopPropagation(); deleteTrip('${t.id}')">✕</span>
+    </span>
+  `).join('');
+}
+
+function deleteTrip(tripId) {
+  let trips = loadTrips();
+  trips = trips.filter(t => t.id !== tripId);
+  saveTrips(trips);
+  if (activeTripView?.id === tripId) exitTripView();
+  renderTripsPanel();
+}
+
+function viewTrip(tripId) {
+  const trips = loadTrips();
+  const trip = trips.find(t => t.id === tripId);
+  if (!trip) return;
+
+  activeTripView = trip;
+  document.getElementById('trip-banner').classList.add('open');
+  document.getElementById('trip-banner-text').textContent =
+    `🧳 Viewing trip: "${trip.name}" — ${trip.ids.length} rooms`;
+  document.getElementById('trips-panel').classList.remove('open');
+  renderTripsPanel();
+  renderMap();
+}
+
+function exitTripView() {
+  activeTripView = null;
+  document.getElementById('trip-banner').classList.remove('open');
+  if (routeLine) { map.removeLayer(routeLine); routeLine = null; }
+  renderTripsPanel();
+  renderMap();
+}
+
+function toggleTripsPanel() {
+  document.getElementById('trips-panel').classList.toggle('open');
+}
+
+document.getElementById('trip-toggle').addEventListener('click', toggleTripPlannerMode);
+document.getElementById('trips-toggle').addEventListener('click', toggleTripsPanel);
+
+['f-search', 'f-country', 'f-state', 'f-sort'].forEach(id => {
   const el = document.getElementById(id);
   el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', renderMap);
 });
 
 populateFilters();
 renderMap();
+renderTripsPanel();
 loadStateBoundaries();
 </script>
 </body>
