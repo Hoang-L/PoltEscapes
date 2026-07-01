@@ -400,10 +400,10 @@
             <span class="trip-tray-count" id="trip-tray-count">0 selected</span>
             <div class="trip-tray-actions">
               <button class="trip-tray-btn" id="trip-clear-btn" onclick="clearTripSelection()">Clear</button>
-              <button class="trip-tray-btn primary" id="trip-save-btn" onclick="beginSaveTrip()" disabled>Save as Trip</button>
+              <button class="trip-tray-btn primary" id="trip-save-btn" onclick="handleTripSaveClick()" disabled>Save as Trip</button>
             </div>
           </div>
-          <input type="text" class="trip-name-input" id="trip-name-input" placeholder="Name this trip… (e.g. Barcelona Weekend)" onkeydown="if(event.key==='Enter') confirmSaveTrip()">
+          <input type="text" class="trip-name-input" id="trip-name-input" placeholder="Name this trip… (e.g. Barcelona Weekend)" onkeydown="if(event.key==='Enter') confirmSaveTrip(); if(event.key==='Escape') cancelSaveTrip();">
         </div>
       </div>
     </div>
@@ -785,7 +785,9 @@ function toggleTripSelection(roomId) {
 
 function clearTripSelection() {
   selectedForTrip.clear();
-  document.getElementById('trip-name-input').classList.remove('open');
+  const input = document.getElementById('trip-name-input');
+  input.classList.remove('open');
+  document.getElementById('trip-save-btn').textContent = 'Save as Trip';
   updateTripTray();
   renderSidebar(filteredRooms);
 }
@@ -793,14 +795,37 @@ function clearTripSelection() {
 function updateTripTray() {
   const n = selectedForTrip.size;
   document.getElementById('trip-tray-count').textContent = `${n} selected`;
-  document.getElementById('trip-save-btn').disabled = n < 2;
+  const btn = document.getElementById('trip-save-btn');
+  const inputOpen = document.getElementById('trip-name-input').classList.contains('open');
+  if (!inputOpen) btn.disabled = n < 2;
+}
+
+function handleTripSaveClick() {
+  const input = document.getElementById('trip-name-input');
+  if (input.classList.contains('open')) {
+    confirmSaveTrip();
+  } else {
+    beginSaveTrip();
+  }
 }
 
 function beginSaveTrip() {
   const input = document.getElementById('trip-name-input');
+  const btn = document.getElementById('trip-save-btn');
   input.classList.add('open');
   input.value = '';
   input.focus();
+  btn.textContent = 'Confirm ✓';
+  btn.disabled = false; // re-enabled once a name is typed via input event below
+}
+
+function cancelSaveTrip() {
+  const input = document.getElementById('trip-name-input');
+  const btn = document.getElementById('trip-save-btn');
+  input.classList.remove('open');
+  input.value = '';
+  btn.textContent = 'Save as Trip';
+  updateTripTray();
 }
 
 function confirmSaveTrip() {
@@ -817,7 +842,9 @@ function confirmSaveTrip() {
   });
   saveTrips(trips);
 
+  const btn = document.getElementById('trip-save-btn');
   input.classList.remove('open');
+  btn.textContent = 'Save as Trip';
   clearTripSelection();
   toggleTripPlannerMode(); // exit trip-building mode
   renderTripsPanel();
@@ -836,7 +863,7 @@ function renderTripsPanel() {
 
   listEl.innerHTML = trips.map(t => `
     <span class="trip-chip ${activeTripView?.id === t.id ? 'viewing' : ''}" onclick="viewTrip('${t.id}')">
-      🧳 ${t.name} <span style="opacity:0.6;">(${t.ids.length})</span>
+       ${t.name} <span style="opacity:0.6;">(${t.ids.length})</span>
       <span class="trip-x" onclick="event.stopPropagation(); deleteTrip('${t.id}')">✕</span>
     </span>
   `).join('');
@@ -858,7 +885,7 @@ function viewTrip(tripId) {
   activeTripView = trip;
   document.getElementById('trip-banner').classList.add('open');
   document.getElementById('trip-banner-text').textContent =
-    `🧳 Viewing trip: "${trip.name}" — ${trip.ids.length} rooms`;
+    `Viewing trip: "${trip.name}" — ${trip.ids.length} rooms`;
   document.getElementById('trips-panel').classList.remove('open');
   renderTripsPanel();
   renderMap();
