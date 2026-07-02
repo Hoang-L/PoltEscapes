@@ -1,15 +1,15 @@
 /* =====================================================================
    ⭐  THE WISHLIST — ROOMS YOU WANT TO PLAY
    =====================================================================
-   Source: exported from your Morty wishlist (@Poltergeist) via two HAR
-   captures. First capture: 147 rooms. Second capture (next day): wishlist
-   had grown to 189 rooms — 42 new adds picked up automatically, merged in.
-   Morty's own "wishlisted" count on your profile has been stale both
-   times; trust this file's count over that badge.
+   Source: exported from your Morty wishlist (@Poltergeist) via three HAR
+   captures over time. 147 → 189 → 197 rooms as your wishlist has grown.
+   Morty's own "wishlisted" count on your profile has been stale every
+   time; trust this file's count over that badge.
 
-   GEOCODING STATUS: All 189 rooms have real coordinates. 🎉
+   GEOCODING STATUS: All 197 rooms have real coordinates.
    Give Claude a fresh HAR export any time to pick up new wishlist adds —
-   it will automatically skip venues already geocoded here.
+   it will automatically diff against this file, geocode only genuinely
+   new venues, and reuse coordinates for any repeat venues.
 
    FIELD REFERENCE: (same shape as ../js/data.js, minus play-specific fields)
      name       (string, required)  — Room name
@@ -233,6 +233,17 @@ const WISHLIST = [
     notes: "",
   },
   {
+    id: "w3733",
+    name: "Captain Spoopy Bones and the Magnificent Quest For Some Other Pirate's Treasure!",
+    venue: "Doldrick's Escape Room",
+    city: "Kissimmee",
+    state: "FL",
+    country: "United States",
+    lat: 28.335142, lng: -81.478393,
+    url: "https://morty.app/attraction/3733/captain-spoopy-bones",
+    notes: "",
+  },
+  {
     id: "w3828",
     name: "Hunting Dracula [Formerly \"V\"]",
     venue: "Locked Adventures",
@@ -252,6 +263,17 @@ const WISHLIST = [
     country: "United States",
     lat: 39.9607742, lng: -105.1666727,
     url: "https://morty.app/attraction/3918/paradox-the-incredible-time-machine",
+    notes: "",
+  },
+  {
+    id: "w3960",
+    name: "The Man From Beyond",
+    venue: "Strange Bird Immersive",
+    city: "Houston",
+    state: "TX",
+    country: "United States",
+    lat: 29.7851776, lng: -95.4452023,
+    url: "https://morty.app/attraction/3960/the-man-from-beyond",
     notes: "",
   },
   {
@@ -1377,6 +1399,17 @@ const WISHLIST = [
     notes: "",
   },
   {
+    id: "w45020",
+    name: "Click 'N Glitch Arcade Palace",
+    venue: "The Escape Ventures - Port Charlotte",
+    city: "Port Charlotte",
+    state: "FL",
+    country: "United States",
+    lat: 26.9862999, lng: -82.1012028,
+    url: "https://morty.app/attraction/45020/click-n-glitch-arcade-palace",
+    notes: "",
+  },
+  {
     id: "w45123",
     name: "Kaleidoskop 1963 [Kaleidoscope 1963]",
     venue: "Time Maze",
@@ -1410,6 +1443,17 @@ const WISHLIST = [
     notes: "",
   },
   {
+    id: "w45875",
+    name: "Nightfall: Creature At Camp Deadwood",
+    venue: "The Escape Ventures - Port Charlotte",
+    city: "Port Charlotte",
+    state: "FL",
+    country: "United States",
+    lat: 26.9862999, lng: -82.1012028,
+    url: "https://morty.app/attraction/45875/nightfall-creature-at-camp-deadwood",
+    notes: "",
+  },
+  {
     id: "w46204",
     name: "Starship | Interstellar Escape",
     venue: "Wild Goose Escapes - Fullerton",
@@ -1440,6 +1484,17 @@ const WISHLIST = [
     country: "United States",
     lat: 30.4345282, lng: -90.4405458,
     url: "https://morty.app/attraction/46793/shhh",
+    notes: "",
+  },
+  {
+    id: "w46968",
+    name: "Cinema 7",
+    venue: "Will To Escape - Orlando",
+    city: "Orlando",
+    state: "FL",
+    country: "United States",
+    lat: 28.4324049, lng: -81.4699214,
+    url: "https://morty.app/attraction/46968/cinema-7-cult-classics",
     notes: "",
   },
   {
@@ -1993,6 +2048,17 @@ const WISHLIST = [
     notes: "",
   },
   {
+    id: "w64583",
+    name: "Haunted Harbor",
+    venue: "The Escape Ventures - Winter Garden [prev. Escape Goat]",
+    city: "Winter Garden",
+    state: "FL",
+    country: "United States",
+    lat: 28.5703993, lng: -81.5678425,
+    url: "https://morty.app/attraction/64583/haunted-harbor",
+    notes: "",
+  },
+  {
     id: "w64867",
     name: "Big Brain Labs",
     venue: "60Out - Hollywood",
@@ -2089,6 +2155,28 @@ const WISHLIST = [
     country: "United States",
     lat: 47.5623837, lng: -122.3873958,
     url: "https://morty.app/attraction/66380/polybius-lives",
+    notes: "",
+  },
+  {
+    id: "w66692",
+    name: "Factory Heist: Operation Green Bean",
+    venue: "Evasive Escape Rooms",
+    city: "Sarasota",
+    state: "FL",
+    country: "United States",
+    lat: 27.3371292, lng: -82.4698621,
+    url: "https://morty.app/attraction/66692/factory-heist-operation-green-bean",
+    notes: "",
+  },
+  {
+    id: "w66731",
+    name: "The Whispering Pages at Blackwood Library",
+    venue: "Escape Reality ",
+    city: "Sarasota",
+    state: "FL",
+    country: "United States",
+    lat: 27.3867168, lng: -82.5028687,
+    url: "https://morty.app/attraction/66731/the-whispering-pages-at-blackwood-library",
     notes: "",
   },
   {
