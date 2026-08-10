@@ -1572,6 +1572,31 @@ const ROOMS = [
     outcome: "escaped",
     group: ["Brian","Longman"],
     photo: "",
+  },
+  {
+    id: "125",
+    name: "Criminal University",
+    venue: "Enchanted Escape (Northridge)",
+    date: "2026-08-07",
+    state: "CA",
+    country: "United States",
+    lat: 34.2206675506977, lng: -118.55325192999221,
+    outcome: "escaped",
+    group: ["Jason","Nick","Johnny"],
+    photo: "",
+  },
+  {
+    id: "126",
+    name: "The Nemesis",
+    venue: "Mission Escape (Anaheim)",
+    date: "2026-08-09",
+    state: "CA",
+    country: "United States",
+    lat: 33.80526994057094, lng: -117.91177741472275,
+    outcome: "escaped",
+    rating: 2,
+    group: ["Ann","May","Van","Chan","Don","Tee","Elly"],
+    photo: "",
   }
 ];
 
