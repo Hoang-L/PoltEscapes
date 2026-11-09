@@ -1704,7 +1704,7 @@ const ROOMS = [
   {
     id: "135",
     name: "Video Valhalla",
-    venue: "Exit4 (Allen,Texas)",
+    venue: "Exit4 (Allen)",
     date: "2026-11-05",
     state: "TX",
     country: "United States",
@@ -1716,7 +1716,7 @@ const ROOMS = [
   {
     id: "136",
     name: "Wong's Kitchen",
-    venue: "The Perfect Escape (Arlington, Texas)",
+    venue: "The Perfect Escape (Arlington)",
     date: "2026-11-07",
     state: "TX",
     country: "United States",
