@@ -1735,7 +1735,7 @@ const ROOMS = [
     lat: 34.06270776857568, lng: -117.28059644190728,  
     outcome: "escaped",
     rating: 4,
-    group: ["Brian","Kelly","Tiffany","Carmen"],
+    group: ["Brian","Kelly","Tiffani","Carmen"],
     photo: "",
   }
 ];
