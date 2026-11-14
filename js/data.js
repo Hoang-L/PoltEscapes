@@ -1728,7 +1728,7 @@ const ROOMS = [
   {
     id: "137",
     name: "Undercooked: Kitchen Chaos",
-    venue: "Saber Escapes (San Bernadino)",
+    venue: "Saber Escapes (San Bernardino)",
     date: "2026-11-08",
     state: "CA",
     country: "United States",
